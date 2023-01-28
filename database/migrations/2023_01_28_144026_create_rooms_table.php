@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('building');
             $table->string('campus');
             $table->integer('capacity');
-            $table->json('facilities')->nullable();
             $table->integer('room_number');
             
         });

@@ -9,11 +9,8 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['facilities'];
 
-    protected $casts = [
-        'facilities' => 'array',
-    ];
+ 
 
     public function bookings()
     {
