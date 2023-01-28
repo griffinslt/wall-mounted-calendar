@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('campus');
             $table->integer('capacity');
             $table->integer('room_number');
+
+            
             
         });
     }

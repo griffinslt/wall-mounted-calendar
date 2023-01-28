@@ -9,8 +9,8 @@ class Facility extends Model
 {
     use HasFactory;
 
-    public function room()
+    public function rooms()
     {
-        return $this->belongsTo(Facility::class);
+        return $this->belongsToMany(Facility::class);
     }
 }
