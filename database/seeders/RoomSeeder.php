@@ -21,7 +21,9 @@ class RoomSeeder extends Seeder
         $r->capacity = 10;
         $r->room_number = 4;
         $r->save();
-
+        Room::factory()->count(200)->create();
         
     }
+
+    
 }

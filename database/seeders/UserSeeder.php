@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -35,5 +36,10 @@ class UserSeeder extends Seeder
         $u3->password = bcrypt('password2');
         $u3->role = 'lecturer';
         $u3->save();
+
+        User::factory()
+            ->hasBookings(2)
+            ->count(100)->create();
+    
     }
 }
