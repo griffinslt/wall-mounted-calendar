@@ -23,7 +23,7 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        return view('make_booking');
     }
 
     /**
