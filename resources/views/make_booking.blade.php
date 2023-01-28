@@ -3,6 +3,6 @@
 @section('title', 'Make a Booking')
     
 @section('content')
-<h1>hello</h1>
+@livewire('booking-component', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'in_use' => false])
     
 @endsection

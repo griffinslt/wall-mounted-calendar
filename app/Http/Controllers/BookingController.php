@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -21,9 +23,11 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Room $room)
     {
-        return view('make_booking');
+        $bookings = Booking::all();
+        $rooms = Room::all();
+        return view('make_booking', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room]);
     }
 
     /**
