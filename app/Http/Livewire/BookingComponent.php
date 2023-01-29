@@ -9,9 +9,11 @@ class BookingComponent extends Component
 
     public $bookings;
     public $rooms;
+
+    public $room;
     public $room_id = 1; //would actually be the room the tablet is connected to
 
-    public $time = "2018-02-16 14:23:23"; //would actually be the current time ($current = Carbon::now();)
+    public $time = "0000-02-16 14:23:23"; //would actually be the current time ($current = Carbon::now();)
 
 
 
