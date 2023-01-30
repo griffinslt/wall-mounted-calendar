@@ -21,5 +21,12 @@ class BookingSeeder extends Seeder
         $b->room_id = 1;
         $b->user_id = 1;
         $b->save();
+
+        $b = new Booking;
+        $b->duration = 30;
+        $b->time_of_booking = '2023-02-01 10:30:00';
+        $b->room_id = 50;
+        $b->user_id = 1;
+        $b->save();
     }
 }
