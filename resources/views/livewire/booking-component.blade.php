@@ -8,34 +8,34 @@
     {{-- show other nearby avaialable rooms at this time --}}
 
 
-    @php
+    {{-- @php
         $in_use = false;
         $carbonTime = Carbon\Carbon::parse($time);
-    @endphp
+    @endphp --}}
 
 
 
 
-    @foreach ($bookings as $booking)
+    {{-- @foreach ($bookings as $booking)
         @if (Carbon\Carbon::parse($booking->time_of_booking)->lte(Carbon\Carbon::parse($time)) and
                 Carbon\Carbon::parse($booking->time_of_booking)->addMinutes($booking->duration)->gte(Carbon\Carbon::parse($time)))
             @php
                 $in_use = true;
             @endphp
         @endif
-    @endforeach
+    @endforeach --}}
 
 
 
 
 
 
-    @if (!$in_use)
+    @if (!$this->checkInUse())
         <div class="containter-fluid bg-success text-white">
             <div class = 'container-fluid'>
             <div class="row justify-content-center align-items-center g-2">
                 <div class="col"><h1>Room Available</h1></div>
-                <div class="col"><h1>{{$carbonTime->format('H:i')}}</h1></div>
+                <div class="col"><h1>{{$this->time->format('H:i')}}</h1></div>
 
             </div>
             
