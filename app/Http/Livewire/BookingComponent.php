@@ -2,11 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Booking;
 use Carbon\Carbon;
 use Livewire\Component;
 
 class BookingComponent extends Component
 {
+
+    protected $listeners = ['refreshComponent' => '$refresh'];
     public $bookings;
     public $rooms;
 
@@ -19,7 +22,9 @@ class BookingComponent extends Component
 
     public $checked_in;
 
-    private $current_booking;
+    public $current_booking;
+
+    
 
     public function boot()
     {
@@ -52,7 +57,7 @@ class BookingComponent extends Component
 
     public function getTime()
     {
-        $this->time = Carbon::now();
+        $this->time = Carbon::now();//Carbon::parse("2023-02-01 10:30:00");/
         return $this->time;
     }
 
@@ -84,6 +89,28 @@ class BookingComponent extends Component
         } else {
             return $endOfCurrentBooking;
         }
+    }
+
+    public function bookMeeting($duration)
+    {
+        $b = new Booking;
+        $b->time_of_booking = $this->getTime();
+        $b->duration = $duration;
+        $b->room_id = $this->room->id;
+        $b->user_id = null;
+        $b->save();
+        $this->in_use = true;
+        $this->refresh();
+        $this->emit('refreshComponent');
+
+        //put some validation to make sure there is no double bookings here.
+    }
+
+    public function refreshBooking()
+    {
+
+        $this->bookings = Booking::get();
+
     }
 
     public function render()
