@@ -8,7 +8,6 @@ use Livewire\Component;
 
 class BookingComponent extends Component
 {
-
     protected $listeners = ['refreshComponent' => '$refresh'];
     public $bookings;
     public $rooms;
@@ -23,8 +22,6 @@ class BookingComponent extends Component
     public $checked_in;
 
     public $current_booking;
-
-    
 
     public function boot()
     {
@@ -57,7 +54,7 @@ class BookingComponent extends Component
 
     public function getTime()
     {
-        $this->time = Carbon::now();//Carbon::parse("2023-02-01 10:30:00");/
+        $this->time = Carbon::now(); //Carbon::parse("2023-02-01 10:30:00");/
         return $this->time;
     }
 
@@ -93,24 +90,44 @@ class BookingComponent extends Component
 
     public function bookMeeting($duration)
     {
-        $b = new Booking;
-        $b->time_of_booking = $this->getTime();
+        $time_for_booking_original = $this->getTime()->second(0);
+        $time_for_booking = $this->getTime()->second(0);
+        $min = intval($time_for_booking->format('i'));
+
+        if ($min > 1 and $min <= 15) {
+            $time_for_booking->minute(15);
+            
+        } elseif ($min > 15 and $min <= 30) {
+            $time_for_booking->minute(30);
+        } elseif ($min > 30 and $min <= 45) {
+            $time_for_booking->minute(45);
+        } elseif ($min > 45 and $min <= 59) {
+            $time_for_booking->addHours(1);
+            $time_for_booking->minute(0);
+        }
+
+
+
+        $duration = $duration + $time_for_booking_original->diffInMinutes($time_for_booking);
+
+        $b = new Booking();
+        $b->time_of_booking = $time_for_booking_original;
         $b->duration = $duration;
         $b->room_id = $this->room->id;
         $b->user_id = null;
         $b->save();
         $this->in_use = true;
-        $this->refresh();
+        $this->refreshBooking();
         $this->emit('refreshComponent');
 
         //put some validation to make sure there is no double bookings here.
     }
 
+
+
     public function refreshBooking()
     {
-
         $this->bookings = Booking::get();
-
     }
 
     public function render()
