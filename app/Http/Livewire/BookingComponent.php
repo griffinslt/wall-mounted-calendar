@@ -37,7 +37,7 @@ class BookingComponent extends Component
             if (
                 Carbon::parse($booking->time_of_booking)->lte($this->time) and
                 Carbon::parse($booking->time_of_booking)
-                    ->addMinutes($booking->duration)
+                    ->addMinutes($booking->duration-1)
                     ->gte($this->time) and
                 ($booking->room_id = $this->room_id)
             ) {

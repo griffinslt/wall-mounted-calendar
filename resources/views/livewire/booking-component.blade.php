@@ -9,7 +9,7 @@
             $this->refreshBooking();
         @endphp
         @if (!$this->checkInUse())
-            <div class="containter-fluid bg-success text-white rounded m-1">
+            <div class="containter-fluid bg-success text-white">
                 <div class='container-fluid'>
                     <div class="row justify-content-center align-items-center g-2">
                         <div class="col">
