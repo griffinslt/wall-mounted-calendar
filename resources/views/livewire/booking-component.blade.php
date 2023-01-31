@@ -45,7 +45,7 @@
                     <div class="row bg-secondary py-3 border border-secondary rounded mx-1">
                         <h1>Book Now</h1>
 
-                        <div class="row bg-light py-5 border border-light rounded ml-1 mr-1">
+                        <div class="row bg-light py-5 border border-light rounded m-1 px-5">
                             <div class='col'><button wire:click="bookMeeting({{ 15 }})"
                                     class="btn btn-light btn-lg">15 mins</button></div>
                             <div class='col'><button wire:click="bookMeeting({{ 30 }})"
@@ -66,11 +66,13 @@
                     <div class="row py-3"></div>
 
                     <div class="row py-3">
-                        <h3>Next Booked Meeting is at
-                            @if ($this->getNextBooking())
+
+                        @if ($this->getNextBooking())
+                            <h3>Next Booked Meeting is at
                                 {{ Carbon\Carbon::parse($this->getNextBooking()->time_of_booking)->format('d-m-Y H:i') }}
-                            @endif
-                        </h3>
+                            </h3>
+                        @endif
+
                     </div>
                     <div class="row justify-content-center align-items-center g-2 py-5">
                         <div class="col">
@@ -88,9 +90,11 @@
                     <div class='container-fluid'>
                         <div class="row justify-content-center align-items-center g-2">
                             <div class="col">
-                                <h1>Room Booked Until {{Carbon\Carbon::parse($this->current_booking->time_of_booking)->addMinutes($this->current_booking->duration)->format("H:i")}}</h1>
+                                <h1>Current Booking Ends At
+                                    {{ Carbon\Carbon::parse($this->current_booking->time_of_booking)->addMinutes($this->current_booking->duration)->format('H:i') }}
+                                </h1>
                             </div>
-                            <div class='col'></div>
+                            {{-- <div class='col'></div> --}}
                             <div class="col">
                                 <h1>{{ $this->getTime()->format('H:i') }}</h1>
                             </div>
@@ -133,28 +137,29 @@
                         <div class="row py-3 "></div>
 
                         <div class="row justify-content-center align-items-center g-2">
-                            
-                        
-                        <div class="row py-3 bg-secondary rounded m-1">
-                            <h3>
-                                @if ($this->getNextFree())
-                                    Room is next free at <strong>
-                                    {{ Carbon\Carbon::parse($this->getNextFree())->format('d-m-Y H:i') }} </strong>
+
+
+                            <div class="row py-3 bg-secondary rounded m-1">
+                                <h3>
+                                    @if ($this->getNextFree())
+                                        Room is next free at <strong>
+                                            {{ Carbon\Carbon::parse($this->getNextFree())->format('d-m-Y H:i') }}
+                                        </strong>
+                                    @endif
+
+                                </h3>
+
+                                <p></p>
+                                @if ($this->getNextBooking())
+                                    <h3>Next Booked Meeting is at
+
+                                        <strong>{{ Carbon\Carbon::parse($this->getNextBooking()->time_of_booking)->format('d-m-Y H:i') }}</strong>
                                 @endif
 
-                            </h3>
-                            
-                            <p></p>
-                            @if ($this->getNextBooking())
-                                <h3>Next Booked Meeting is at
+                                </h3>
 
-                                    <strong>{{ Carbon\Carbon::parse($this->getNextBooking()->time_of_booking)->format('d-m-Y H:i') }}</strong>
-                            @endif
-
-                            </h3>
-                            
+                            </div>
                         </div>
-                    </div>
                         <div class="row justify-content-center align-items-center g-2 py-5">
                             <div class="col">
                                 <button type="button" class="btn btn-outline-light btn-lg">Report Issue</button>

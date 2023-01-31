@@ -69,12 +69,16 @@ class BookingComponent extends Component
 
     public function getNextBooking()
     {
-        return $this->bookings
-            ->toQuery()
-            ->where('room_id', '=', $this->room->id)
-            ->where('time_of_booking', '>', $this->time->format('Y-m-d H:i:s'))
-            ->orderBy('time_of_booking', 'desc')
-            ->first();
+        if (count($this->bookings) > 0) {
+            return $this->bookings
+                ->toQuery()
+                ->where('room_id', '=', $this->room->id)
+                ->where('time_of_booking', '>', $this->time->format('Y-m-d H:i:s'))
+                ->orderBy('time_of_booking', 'asc')
+                ->first();
+        } else {
+            return null;
+        }
     }
 
     public function getNextFree()
@@ -96,7 +100,6 @@ class BookingComponent extends Component
 
         if ($min > 1 and $min <= 15) {
             $time_for_booking->minute(15);
-            
         } elseif ($min > 15 and $min <= 30) {
             $time_for_booking->minute(30);
         } elseif ($min > 30 and $min <= 45) {
@@ -105,8 +108,6 @@ class BookingComponent extends Component
             $time_for_booking->addHours(1);
             $time_for_booking->minute(0);
         }
-
-
 
         $duration = $duration + $time_for_booking_original->diffInMinutes($time_for_booking);
 
@@ -122,8 +123,6 @@ class BookingComponent extends Component
 
         //put some validation to make sure there is no double bookings here.
     }
-
-
 
     public function refreshBooking()
     {
