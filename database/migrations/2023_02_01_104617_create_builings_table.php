@@ -16,8 +16,10 @@ return new class extends Migration
         Schema::create('buildings', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('name')->unique();
             $table->float('gps_latitude');
             $table->float('gps_longitude');
+            $table->string('campus')->nullable();//some unis will only have one campus
             
         });
     }
