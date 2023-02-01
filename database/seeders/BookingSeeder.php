@@ -17,16 +17,18 @@ class BookingSeeder extends Seeder
     {
         $b = new Booking;
         $b->duration = 30;
-        $b->time_of_booking = '2023-01-15 10:30:00';
+        $b->time_of_booking = '2023-02-01 10:30:00';
         $b->room_id = 1;
         $b->user_id = 1;
         $b->save();
 
         $b = new Booking;
-        $b->duration = 30;
-        $b->time_of_booking = '2023-02-01 10:30:00';
-        $b->room_id = 50;
+        $b->duration = 1000;
+        $b->time_of_booking = '2023-02-01 12:50:00';
+        $b->room_id = 2;
         $b->user_id = 1;
         $b->save();
+
+
     }
 }

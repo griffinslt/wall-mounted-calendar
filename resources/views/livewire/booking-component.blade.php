@@ -8,7 +8,7 @@
         @php
             $this->refreshBooking();
         @endphp
-        @if (!$this->checkInUse())
+        @if (!$this->checkInUse($this->room))
             <div class="containter-fluid bg-success text-white">
                 <div class='container-fluid'>
                     <div class="row justify-content-center align-items-center g-2">
@@ -131,7 +131,7 @@
                                 @endif
 
                             </div>
-                            <div class="col"><button type="button" class="btn btn-primary btn-lg">Book Another Room
+                            <div wire:click = 'findAvailableRoom' class="col"><button type="button" class="btn btn-primary btn-lg">Book Another Room
                                     Now</button></div>
                         </div>
                         <div class="row py-3 "></div>

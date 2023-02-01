@@ -17,7 +17,7 @@ class BookingComponent extends Component
 
     public $time; //would actually be the current time ($current = Carbon::now();)
 
-    public $in_use;
+    //public $in_use;
 
     public $checked_in;
 
@@ -25,31 +25,42 @@ class BookingComponent extends Component
 
     public function boot()
     {
-        $this->in_use = false;
+        //$this->in_use = false;
         $this->checked_in = false;
         $this->current_booking = null;
         $this->time = $this->time = Carbon::now();
     }
 
-    public function checkInUse()
+    public function checkInUse($room)
+
     {
-        foreach ($this->bookings as $booking) {
+        $inUse = false;
+        
+        foreach ($room->bookings as $booking) {
+            $inUse = false;
             if (
-                Carbon::parse($booking->time_of_booking)->lte($this->time) and
+                Carbon::parse($booking->time_of_booking)->lte($this->getTime()) and
                 Carbon::parse($booking->time_of_booking)
                     ->addMinutes($booking->duration - 1)
-                    ->gte($this->time) and
-                ($booking->room_id = $this->room_id)
+                    ->gte($this->getTime()) and
+                ($booking->room_id = $room->id)
             ) {
-                $this->in_use = true;
-                $this->current_booking = $booking;
-                break;
+                //$this->in_use = true;
+
+                $inUse = true;
+                if ($room->id == $this->room->id) {
+                    $this->current_booking = $booking;
+                }
+                
+                //break;
             } else {
-                $this->in_use = false;
+                //$this->in_use = false;
+                $inUse = false;
             }
         }
 
-        return $this->in_use;
+        //return $this->in_use;
+        return $inUse;
     }
 
     public function getTime()
@@ -117,7 +128,7 @@ class BookingComponent extends Component
         $b->room_id = $this->room->id;
         $b->user_id = null;
         $b->save();
-        $this->in_use = true;
+        //$this->in_use = true;
         $this->refreshBooking();
         $this->emit('refreshComponent');
 
@@ -129,6 +140,7 @@ class BookingComponent extends Component
         $newDuration = $this->getTime()->diffInMinutes(Carbon::parse($this->current_booking->time_of_booking));
         $this->current_booking->duration = $newDuration;
         $this->current_booking->save();
+        $this->checked_in = false;
         $this->refreshBooking();
         $this->emit('refreshComponent');
     }
@@ -138,11 +150,23 @@ class BookingComponent extends Component
         $this->bookings = Booking::get();
     }
 
-    public function findAvilableRoom()
+    public function findAvailableRoom()
     {
-        foreach ($this->bookings as $key => $value) {
-            # code...
+        $this->refreshBooking();
+        $this->emit('refreshComponent');
+        $inUse = array();
+        $availableRooms = array();
+        foreach ($this->rooms as $room) {
+            if ($room->building_id == $this->room->building_id) {
+                if ($room->floor == $this->room->floor and $room->id != $this->room->id and !$this->checkInUse($room)) {
+                    //array_push($inUse,$this->checkInUse($room));
+                    array_push($availableRooms, $room->bookings);
+
+                }
+            }
         }
+
+        dd($availableRooms);
     }
 
     public function render()

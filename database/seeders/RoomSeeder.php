@@ -17,7 +17,21 @@ class RoomSeeder extends Seeder
     {
         $r = new Room;
         $r->capacity = 10;
-        $r->room_number = 4;
+        $r->room_number = 1;
+        $r->building_id = 1;
+        $r->floor = 1;
+        $r->save();
+
+        $r = new Room;
+        $r->capacity = 10;
+        $r->room_number = 2;
+        $r->building_id = 1;
+        $r->floor = 1;
+        $r->save();
+
+        $r = new Room;
+        $r->capacity = 10;
+        $r->room_number = 3;
         $r->building_id = 1;
         $r->floor = 1;
         $r->save();
