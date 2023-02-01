@@ -54,7 +54,7 @@ class BookingComponent extends Component
 
     public function getTime()
     {
-        $this->time = Carbon::now(); //Carbon::parse("2023-02-01 10:30:00");/
+        $this->time = Carbon::now();
         return $this->time;
     }
 
@@ -136,6 +136,11 @@ class BookingComponent extends Component
     public function refreshBooking()
     {
         $this->bookings = Booking::get();
+    }
+
+    public function findAvilableRoom()
+    {
+        # code...
     }
 
     public function render()

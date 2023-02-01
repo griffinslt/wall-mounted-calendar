@@ -17,10 +17,15 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('building');
-            $table->string('campus');
+            
+            //$table->string('campus');
             $table->integer('capacity');
             $table->integer('room_number');
+            $table->integer('floor');
+
+            $table->unsignedBigInteger('building_id');
+            $table->foreign('building_id')->references('id')->on('buildings')->onDelete('cascade')->onUpdate('cascade');
+            
 
             
             

@@ -16,10 +16,10 @@ class RoomSeeder extends Seeder
     public function run()
     {
         $r = new Room;
-        $r->building = 'CoFo';
-        $r->campus = 'Bay Campus';
         $r->capacity = 10;
         $r->room_number = 4;
+        $r->building_id = 1;
+        $r->floor = 1;
         $r->save();
         Room::factory()->count(200)->create();
         
