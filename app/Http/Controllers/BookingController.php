@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Building;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,8 @@ class BookingController extends Controller
     {
         $bookings = Booking::all();
         $rooms = Room::all();
-        return view('make_booking', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room]);
+        $buildings = Building::all();
+        return view('make_booking', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
     }
 
     /**

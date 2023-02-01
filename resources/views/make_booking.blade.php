@@ -8,6 +8,6 @@
 
 </div>
 
-    @livewire('booking-component', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room])
+    @livewire('booking-component', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings])
 
 @endsection

@@ -10,6 +10,7 @@ class BookingComponent extends Component
 {
     protected $listeners = ['refreshComponent' => '$refresh'];
     public $bookings;
+    public $buildings;
     public $rooms;
 
     public $room;
@@ -32,10 +33,9 @@ class BookingComponent extends Component
     }
 
     public function checkInUse($room)
-
     {
         $inUse = false;
-        
+
         foreach ($room->bookings as $booking) {
             $inUse = false;
             if (
@@ -51,7 +51,7 @@ class BookingComponent extends Component
                 if ($room->id == $this->room->id) {
                     $this->current_booking = $booking;
                 }
-                
+
                 //break;
             } else {
                 //$this->in_use = false;
@@ -154,19 +154,59 @@ class BookingComponent extends Component
     {
         $this->refreshBooking();
         $this->emit('refreshComponent');
-        $inUse = array();
-        $availableRooms = array();
+        $inUse = [];
+        $availableRooms = [];
         foreach ($this->rooms as $room) {
-            if ($room->building_id == $this->room->building_id) {
-                if ($room->floor == $this->room->floor and $room->id != $this->room->id and !$this->checkInUse($room)) {
-                    //array_push($inUse,$this->checkInUse($room));
-                    array_push($availableRooms, $room->bookings);
+            if ($room->building_id == $this->room->building_id and $room->floor == $this->room->floor and $room->id != $this->room->id and !$this->checkInUse($room)) {
+                array_push($availableRooms, $room);
+            }
+        }
 
+        if (sizeOf($availableRooms) < 100) {
+            foreach ($this->rooms as $room) {
+                if ($room->building_id == $this->room->building_id and $room->id != $this->room->id and !$this->checkInUse($room)) {
+                    array_push($availableRooms, $room);
+                }
+            }
+        }
+
+        $availableRooms = array_unique($availableRooms);
+        $closestBuildings = $this->getClosestBuildings();
+
+        if (sizeOf($availableRooms) < 100) {
+            foreach ($this->rooms as $room) {
+                if (($room->building_id == $closestBuildings[0] or $room->building_id == $closestBuildings[1]) and !$this->checkInUse($room)) {
+                    array_push($availableRooms, $room);
                 }
             }
         }
 
         dd($availableRooms);
+        return $availableRooms;
+    }
+
+    public function distanceBetweenBuildings($b1, $b2)
+    {
+        $a = max($b1->gps_latitude, $b2->gps_longitude) - min($b1->gps_latitude, $b2->gps_longitude);
+        $b = max($b1->gps_longitude, $b2->gps_longitude) - max($b1->gps_longitude, $b2->gps_longitude);
+        $c = sqrt(pow($a, 2) + pow($b, 2));
+        return $c;
+    }
+    private function getClosestBuildings()
+    {
+        $buildings = [];
+        $current_building = $this->room->building;
+        foreach ($this->buildings as $building) {
+            if ($building != $current_building and $building->campus == $current_building->campus) {
+                $buildings = $buildings + [floatval($building->id) => $this->distanceBetweenBuildings($current_building, $building)];
+            }
+        }
+        $originalBuildings = $buildings;
+        sort($buildings, SORT_NUMERIC);
+        $closest = array_shift($buildings);
+        $second_closest = array_shift($buildings);
+        $twoClosest = [array_search($closest, $originalBuildings), array_search($second_closest, $originalBuildings)];
+        return $twoClosest;
     }
 
     public function render()
