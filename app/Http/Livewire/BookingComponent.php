@@ -37,7 +37,7 @@ class BookingComponent extends Component
             if (
                 Carbon::parse($booking->time_of_booking)->lte($this->time) and
                 Carbon::parse($booking->time_of_booking)
-                    ->addMinutes($booking->duration-1)
+                    ->addMinutes($booking->duration - 1)
                     ->gte($this->time) and
                 ($booking->room_id = $this->room_id)
             ) {
@@ -122,6 +122,15 @@ class BookingComponent extends Component
         $this->emit('refreshComponent');
 
         //put some validation to make sure there is no double bookings here.
+    }
+
+    public function endMeeting()
+    {
+        $newDuration = $this->getTime()->diffInMinutes(Carbon::parse($this->current_booking->time_of_booking));
+        $this->current_booking->duration = $newDuration;
+        $this->current_booking->save();
+        $this->refreshBooking();
+        $this->emit('refreshComponent');
     }
 
     public function refreshBooking()

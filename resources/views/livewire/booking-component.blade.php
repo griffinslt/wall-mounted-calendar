@@ -125,9 +125,9 @@
                         <div class="row bg-secondary py-3 border border-secondary rounded m-1">
                             <div class="col">
                                 @if (!$this->isCheckedIn())
-                                    <button type="button" class="btn btn-primary btn-lg">Check-in</button>
+                                    <button wire:click = "checkIn" type="button" class="btn btn-primary btn-lg">Check-in</button>
                                 @else
-                                    <button type="button" class="btn btn-primary btn-lg">End Meeting</button>
+                                    <button type="button" wire:click = "endMeeting" class="btn btn-primary btn-lg">End Meeting</button>
                                 @endif
 
                             </div>
