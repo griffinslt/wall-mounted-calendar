@@ -42,7 +42,7 @@
                         <h3>Capacity: {{ $room->capacity }}</h3>
                     </div>
                     <div class="row py-3"></div>
-                    <div class="row bg-secondary py-3 border border-secondary rounded mx-1"  >
+                    <div class="row bg-secondary py-3 border border-secondary rounded mx-1">
                         <h1>Book Now</h1>
 
                         <div class="row bg-light py-5 border border-light rounded m-1 px-5" style="height: 100%;">
@@ -125,13 +125,16 @@
                         <div class="row bg-secondary py-3 border border-secondary rounded m-1">
                             <div class="col">
                                 @if (!$this->isCheckedIn())
-                                    <button wire:click = "checkIn" type="button" class="btn btn-primary btn-lg">Check-in</button>
+                                    <button wire:click="checkIn" type="button"
+                                        class="btn btn-primary btn-lg">Check-in</button>
                                 @else
-                                    <button type="button" wire:click = "endMeeting" class="btn btn-primary btn-lg">End Meeting</button>
+                                    <button type="button" wire:click="endMeeting" class="btn btn-primary btn-lg">End
+                                        Meeting</button>
                                 @endif
 
                             </div>
-                            <div wire:click = 'findAvailableRoom' class="col"><button type="button" class="btn btn-primary btn-lg">Book Another Room
+                            <div class="col"><button wire:click='findAvailableRoom' type="button"
+                                    class="btn btn-primary btn-lg">Book Another Room
                                     Now</button></div>
                         </div>
                         <div class="row py-3 "></div>
