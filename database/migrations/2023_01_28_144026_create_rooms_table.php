@@ -22,7 +22,6 @@ return new class extends Migration
             $table->integer('capacity');
             $table->integer('room_number');
             $table->integer('floor');
-
             $table->unsignedBigInteger('building_id');
             $table->foreign('building_id')->references('id')->on('buildings')->onDelete('cascade')->onUpdate('cascade');
             

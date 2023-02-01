@@ -140,7 +140,9 @@ class BookingComponent extends Component
 
     public function findAvilableRoom()
     {
-        # code...
+        foreach ($this->bookings as $key => $value) {
+            # code...
+        }
     }
 
     public function render()

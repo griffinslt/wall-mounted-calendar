@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable()->constrained();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
 
-            $table->unique(['time_of_booking', 'room_id']);
+            // $table->unique(['time_of_booking', 'room_id']);
 
 
         });
