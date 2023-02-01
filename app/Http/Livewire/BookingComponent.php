@@ -175,13 +175,18 @@ class BookingComponent extends Component
 
         if (sizeOf($availableRooms) < 100) {
             foreach ($this->rooms as $room) {
-                if (($room->building_id == $closestBuildings[0] or $room->building_id == $closestBuildings[1]) and !$this->checkInUse($room)) {
+                if ($room->building_id == $closestBuildings[0]  and !$this->checkInUse($room)) {
+                    array_push($availableRooms, $room);
+                }
+            }
+            foreach ($this->rooms as $room) {
+                if ($room->building_id == $closestBuildings[1]  and !$this->checkInUse($room)) {
                     array_push($availableRooms, $room);
                 }
             }
         }
 
-        dd($availableRooms);
+        //dd($availableRooms);
         return $availableRooms;
     }
 

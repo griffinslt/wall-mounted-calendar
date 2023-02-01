@@ -19,7 +19,7 @@ class RoomFactory extends Factory
         return [
             'building_id' => fake()->numberBetween(1, 12),
             'capacity' => fake()->numberBetween(5, 150),
-            'room_number' => fake()->numberBetween(1,350),
+            'room_number' => fake()->numberBetween(1,20),
             'floor' => fake()->numberBetween(1,4),
 
         ];

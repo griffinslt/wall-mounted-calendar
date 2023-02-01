@@ -133,9 +133,12 @@
                                 @endif
 
                             </div>
-                            <div class="col"><button wire:click='findAvailableRoom' type="button"
-                                    class="btn btn-primary btn-lg">Book Another Room
-                                    Now</button></div>
+                            <div class="col">
+                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    Book Another Room Now
+                                </button>
+                            </div>
                         </div>
                         <div class="row py-3 "></div>
 
@@ -174,6 +177,31 @@
                         <div class="row justify-content-center align-items-center g-2 py-5"></div>
 
                     </div>
+
+
+                    <!-- Modal -->
+                    <div class="modal fade text-black" id="exampleModal" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Other Available Room</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    @foreach ($this->findAvailableRoom() as $room)
+                                        <h5>{{ $room->building->name }}, Floor {{ $room->floor }}, Room
+                                            {{ $room->room_number }}</h5>
+
+                                        <hr>
+                                    @endforeach
+                                </div>
+                                <div class="modal-footer">
+                                    <... </div>
+                                </div>
+                            </div>
+                        </div>
 
 
 
