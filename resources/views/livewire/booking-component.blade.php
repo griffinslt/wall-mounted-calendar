@@ -42,10 +42,10 @@
                         <h3>Capacity: {{ $room->capacity }}</h3>
                     </div>
                     <div class="row py-3"></div>
-                    <div class="row bg-secondary py-3 border border-secondary rounded mx-1">
+                    <div class="row bg-secondary py-3 border border-secondary rounded mx-1"  >
                         <h1>Book Now</h1>
 
-                        <div class="row bg-light py-5 border border-light rounded m-1 px-5">
+                        <div class="row bg-light py-5 border border-light rounded m-1 px-5" style="height: 100%;">
                             <div class='col'><button wire:click="bookMeeting({{ 15 }})"
                                     class="btn btn-light btn-lg">15 mins</button></div>
                             <div class='col'><button wire:click="bookMeeting({{ 30 }})"
