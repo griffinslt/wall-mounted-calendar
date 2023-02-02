@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/make-booking/{room}',[BookingController::class, 'create'])->name('booking.create');
+Route::get('/tablet-view/{room}',[BookingController::class, 'create'])->name('booking.create');
+Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');
 
 require __DIR__.'/auth.php';

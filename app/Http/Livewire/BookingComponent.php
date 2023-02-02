@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Booking;
 use Carbon\Carbon;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class BookingComponent extends Component
@@ -33,6 +35,22 @@ class BookingComponent extends Component
         $this->current_booking = null;
         $this->time = $this->time = Carbon::now();
         $this->available_rooms_button_pressed = false;
+    }
+
+    public function reportIssue($issue)
+    {
+
+        dd($issue);
+        Mail::raw("Tablet from room " .$this->room->room_number. " on level " . $this->room->level. "in building " . $this->room->building->name . " on " .  $this->room->building->campus . " Campus is have an issue with " . $issue, function (Message $message) {
+                $message->to("supporst@university.com");
+            });
+
+        Mail::raw("Tablet from room " .$this->room->room_number. " on level " . $this->room->level. "in building " . $this->room->building->name . " on " .  $this->room->building->campus . " Campus is have an issue with " . $issue, function($message)
+        {
+            $message->from('tabletIssue@university.com', 'Laravel');
+            
+            $message->to('support@univeristy.com');
+        });
     }
 
     public function checkInUse($room)
@@ -144,6 +162,7 @@ class BookingComponent extends Component
         $this->current_booking->duration = $newDuration;
         $this->current_booking->save();
         $this->checked_in = false;
+        $this->available_rooms_button_pressed = false;
         $this->refreshBooking();
         $this->emit('refreshComponent');
     }
@@ -156,19 +175,19 @@ class BookingComponent extends Component
     public function findAvailableRoom()
     {
         $this->refreshBooking();
-
         $availableRooms = [];
+
         foreach ($this->rooms as $room) {
             if ($room->building_id == $this->room->building_id and $room->floor == $this->room->floor 
             and $room->id != $this->room->id and !$this->checkInUse($room) 
-            and $room->capacity >= $this->room->capacity) {
+            and $room->capacity >= $this->room->capacity and $this->checkFacilities($this->room, $room)) {
                 array_push($availableRooms, $room);
             }
         }
 
-        if (sizeOf($availableRooms) < 100) {
+        if (sizeOf($availableRooms) < 10) {
             foreach ($this->rooms as $room) {
-                if ($room->building_id == $this->room->building_id and $room->id != $this->room->id and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity) {
+                if ($room->building_id == $this->room->building_id and $room->id != $this->room->id and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity and $this->checkFacilities($this->room, $room)) {
                     array_push($availableRooms, $room);
                 }
             }
@@ -177,21 +196,49 @@ class BookingComponent extends Component
         $availableRooms = array_unique($availableRooms);
         $closestBuildings = $this->getClosestBuildings();
 
-        if (sizeOf($availableRooms) < 100) {
+        if (sizeOf($availableRooms) < 10) {
             foreach ($this->rooms as $room) {
-                if ($room->building_id == $closestBuildings[0] and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity) {
+                if ($room->building_id == $closestBuildings[0] and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity and $this->checkFacilities($this->room, $room)) {
                     array_push($availableRooms, $room);
                 }
             }
             foreach ($this->rooms as $room) {
-                if ($room->building_id == $closestBuildings[1] and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity) {
+                if ($room->building_id == $closestBuildings[1] and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity and $this->checkFacilities($this->room, $room)) {
                     array_push($availableRooms, $room);
                 }
             }
+
+
         }
 
         //dd($availableRooms);
         return $availableRooms;
+    }
+
+    public function checkFacilities($thisRoom, $room)
+    {
+        $thisRoomFacilities = array();
+        $roomFacilities = array();
+        if (count($thisRoom->facilities) == count($room->facilities) and count($this->room->facilities->diff($room->facilities)) ==0) {
+            return true;
+        } else{
+            foreach ($thisRoom->facilities as $facility) {
+                array_push($thisRoomFacilities, $facility->name);
+            }
+
+            foreach ($room->facilities as $facility) {
+                array_push($roomFacilities, $facility->name);
+            }
+            
+            foreach ($thisRoomFacilities as $facility) {
+                if(!in_array($facility, $roomFacilities)){
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        
     }
 
     public function distanceBetweenBuildings($b1, $b2)
@@ -223,6 +270,8 @@ class BookingComponent extends Component
         $this->available_rooms_button_pressed = !$this->available_rooms_button_pressed;
         return $this->available_rooms_button_pressed;
     }
+
+    
 
     public function render()
     {

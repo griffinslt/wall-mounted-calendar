@@ -1,16 +1,10 @@
-{{-- If room is not currently in use --}}
-{{-- allow to book now --}}
-{{-- If room is currently in use --}}
-{{-- show other nearby avaialable rooms at this time --}}
-{{-- Figure out seconds clock using alpine --}}
-<div class=bg-light>
-
+<div>
     <div wire:poll.30000ms>
         @php
             $this->refreshBooking();
         @endphp
         @if (!$this->checkInUse($this->room))
-        
+
             <div class="containter-fluid bg-success text-white">
                 <div class='container-fluid'>
                     <div class="row justify-content-center align-items-center g-2">
@@ -78,7 +72,8 @@
                     </div>
                     <div class="row justify-content-center align-items-center g-2 py-5">
                         <div class="col">
-                            <button type="button" class="btn btn-danger btn-lg">Report Issue</button>
+                            <button data-bs-target="#reportIssueModal" data-bs-toggle="modal" type="button"
+                                class="btn btn-danger btn-lg">Report Issue</button>
                         </div>
                         <div class="col"></div>
                         <div class="col"></div>
@@ -88,19 +83,18 @@
 
                 </div>
             @else
-            @if ($this->isCheckedIn())
-            @php
-                $bgColour = "danger";
-                $textColour = "light" ;
-            @endphp
-        @else
-        @php
-            $bgColour = "warning";
-            $textColour = "black";
-        @endphp
-            
-        @endif
-                <div class="containter-fluid bg-{{$bgColour}} text-{{$textColour}}">
+                @if ($this->isCheckedIn())
+                    @php
+                        $bgColour = 'danger';
+                        $textColour = 'light';
+                    @endphp
+                @else
+                    @php
+                        $bgColour = 'warning';
+                        $textColour = 'black';
+                    @endphp
+                @endif
+                <div class="containter-fluid bg-{{ $bgColour }} text-{{ $textColour }}">
                     <div class='container-fluid'>
                         <div class="row justify-content-center align-items-center g-2">
                             <div class="col-10">
@@ -129,7 +123,8 @@
                             class="row justify-content-center align-items-center g-2 rounded bg-light text-black border-black m-1">
                             <h3>Facilities:
                                 @foreach ($room->facilities as $facility)
-                                <div class="badge bg-warning text-wrap text-black fw-normal">{{ $facility->name }}</div>
+                                    <div class="badge bg-warning text-wrap text-black fw-normal">{{ $facility->name }}
+                                    </div>
                                 @endforeach
                             </h3>
                             <h3>Capacity: {{ $room->capacity }}</h3>
@@ -152,34 +147,34 @@
                                     class="btn btn-primary btn-lg">
                                     See other available rooms
                                 </button>
-                                
+
                             </div>
 
                         </div>
-                        
+
                         <div class="row py-3 m-1">
                             @if ($this->available_rooms_button_pressed)
-                                
-                                    
-                                
-                                    <div class="container-fluid p-3 border bg-light overflow-auto text-black rounded" style="max-height: 120px; max-width:500px; min-height: 120px;">
-                                        @if (count($this->findAvailableRoom()))
+
+
+
+                                <div class="container-fluid p-3 border bg-light overflow-auto text-black rounded"
+                                    style="max-height: 120px; max-width:500px; min-height: 120px;">
+                                    @if (count($this->findAvailableRoom()))
                                         @foreach ($this->findAvailableRoom() as $room)
                                             <h5>{{ $room->building->name }}, Floor {{ $room->floor }}, Room
                                                 {{ $room->room_number }}</h5>
 
                                             <hr>
                                         @endforeach
-                                        @else
-                                        <h5>No other rooms available at the moment</h5>
-                                        @endif
-                                    </div>
-
                                     @else
-                                    <div class="container-fluid p-3" style="min-height: 120px;">
-                                        
-                                    </div>
-                                @endif
+                                        <h5>No other rooms available at the moment</h5>
+                                    @endif
+                                </div>
+                            @else
+                                <div class="container-fluid p-3" style="min-height: 120px;">
+
+                                </div>
+                            @endif
                         </div>
 
                         <div class="row justify-content-center align-items-center g-2">
@@ -208,7 +203,8 @@
                         </div>
                         <div class="row justify-content-center align-items-center g-2 py-3">
                             <div class="col">
-                                <button type="button" class="btn btn-outline-light btn-lg">Report Issue</button>
+                                <button data-bs-target="#reportIssueModal" data-bs-toggle="modal" type="button"
+                                    class="btn btn-outline-light btn-lg">Report Issue</button>
                             </div>
                             <div class="col"></div>
                             <div class="col"></div>
@@ -219,7 +215,7 @@
                     </div>
 
 
-                    <!-- Modal -->
+
 
 
 
@@ -229,29 +225,7 @@
 </div>
 
 </div>
-{{-- 
-<div class="modal fade text-black" id="availableRoomsModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Other Available
-                    Rooms</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                @foreach ($this->findAvailableRoom() as $room)
-                    <h5>{{ $room->building->name }}, Floor {{ $room->floor }}, Room
-                        {{ $room->room_number }}</h5>
 
-                    <hr>
-                @endforeach
-            </div>
-            <div class="modal-footer">
 
-            </div>
-        </div>
-    </div>
-</div> --}}
 
 </div>

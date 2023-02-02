@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Building;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -86,5 +87,18 @@ class BookingController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function reportIssue(Room $room, String $issue)
+    {
+
+        Mail::raw("Tablet from room " .$room->room_number. " on level " . $room->level. "in building " . $room->building->name . " on " .  $room->building->campus . " Campus is have an issue with " . $issue, function($message)
+        {
+            $message->from('tablet-issue@university.com', 'Laravel');
+            
+            $message->to('support@univeristy.com');
+        });
+        //return view('make_booking', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
+        return redirect()->route('booking.create', ['room' => $room]);
     }
 }
