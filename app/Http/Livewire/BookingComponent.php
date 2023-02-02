@@ -32,7 +32,7 @@ class BookingComponent extends Component
         $this->checked_in = false;
         $this->current_booking = null;
         $this->time = $this->time = Carbon::now();
-        $this->available_rooms_button_pressed= false;
+        $this->available_rooms_button_pressed = false;
     }
 
     public function checkInUse($room)
@@ -160,14 +160,16 @@ class BookingComponent extends Component
 
         $availableRooms = [];
         foreach ($this->rooms as $room) {
-            if ($room->building_id == $this->room->building_id and $room->floor == $this->room->floor and $room->id != $this->room->id and !$this->checkInUse($room)) {
+            if ($room->building_id == $this->room->building_id and $room->floor == $this->room->floor 
+            and $room->id != $this->room->id and !$this->checkInUse($room) 
+            and $room->capacity >= $this->room->capacity) {
                 array_push($availableRooms, $room);
             }
         }
 
         if (sizeOf($availableRooms) < 100) {
             foreach ($this->rooms as $room) {
-                if ($room->building_id == $this->room->building_id and $room->id != $this->room->id and !$this->checkInUse($room)) {
+                if ($room->building_id == $this->room->building_id and $room->id != $this->room->id and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity) {
                     array_push($availableRooms, $room);
                 }
             }
@@ -178,12 +180,12 @@ class BookingComponent extends Component
 
         if (sizeOf($availableRooms) < 100) {
             foreach ($this->rooms as $room) {
-                if ($room->building_id == $closestBuildings[0]  and !$this->checkInUse($room)) {
+                if ($room->building_id == $closestBuildings[0] and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity) {
                     array_push($availableRooms, $room);
                 }
             }
             foreach ($this->rooms as $room) {
-                if ($room->building_id == $closestBuildings[1]  and !$this->checkInUse($room)) {
+                if ($room->building_id == $closestBuildings[1] and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity) {
                     array_push($availableRooms, $room);
                 }
             }

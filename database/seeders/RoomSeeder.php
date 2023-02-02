@@ -16,7 +16,7 @@ class RoomSeeder extends Seeder
     public function run()
     {
         $r = new Room;
-        $r->capacity = 10;
+        $r->capacity = 15;
         $r->room_number = 1;
         $r->building_id = 1;
         $r->floor = 1;
