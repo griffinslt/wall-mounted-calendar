@@ -4,6 +4,7 @@
 {{-- show other nearby avaialable rooms at this time --}}
 {{-- Figure out seconds clock using alpine --}}
 <div class=bg-light>
+
     <div wire:poll.60000ms>
         @php
             $this->refreshBooking();
@@ -89,7 +90,7 @@
                 <div class="containter-fluid bg-danger text-white">
                     <div class='container-fluid'>
                         <div class="row justify-content-center align-items-center g-2">
-                            <div class="col">
+                            <div class="col-g">
                                 <h1>Current Booking Ends At
                                     {{ Carbon\Carbon::parse($this->current_booking->time_of_booking)->addMinutes($this->current_booking->duration)->format('H:i') }}
                                 </h1>
@@ -134,13 +135,32 @@
 
                             </div>
                             <div class="col">
-                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                    Book Another Room Now
+                                <button wire:click='pressAvailableRoomsButton' type="button"
+                                    class="btn btn-primary btn-lg">
+                                    See other available rooms
                                 </button>
+                                
                             </div>
+
                         </div>
-                        <div class="row py-3 "></div>
+                        
+                        <div class="row py-3 m-1">
+                            @if ($this->available_rooms_button_pressed)
+                                    <div class="container-fluid p-3 border bg-light overflow-auto text-black rounded" style="max-height: 120px; max-width:500px">
+                                        @foreach ($this->findAvailableRoom() as $room)
+                                            <h5>{{ $room->building->name }}, Floor {{ $room->floor }}, Room
+                                                {{ $room->room_number }}</h5>
+
+                                            <hr>
+                                        @endforeach
+                                    </div>
+
+                                    @else
+                                    <div class="container-fluid p-3  bg-danger" style="min-height: 120px;">
+                                        
+                                    </div>
+                                @endif
+                        </div>
 
                         <div class="row justify-content-center align-items-center g-2">
 
@@ -166,7 +186,7 @@
 
                             </div>
                         </div>
-                        <div class="row justify-content-center align-items-center g-2 py-5">
+                        <div class="row justify-content-center align-items-center g-2 py-3">
                             <div class="col">
                                 <button type="button" class="btn btn-outline-light btn-lg">Report Issue</button>
                             </div>
@@ -180,28 +200,7 @@
 
 
                     <!-- Modal -->
-                    <div class="modal fade text-black" id="exampleModal" tabindex="-1"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Other Available Room</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    @foreach ($this->findAvailableRoom() as $room)
-                                        <h5>{{ $room->building->name }}, Floor {{ $room->floor }}, Room
-                                            {{ $room->room_number }}</h5>
 
-                                        <hr>
-                                    @endforeach
-                                </div>
-                                <div class="modal-footer">
-                                    <... </div>
-                                </div>
-                            </div>
-                        </div>
 
 
 
@@ -210,4 +209,29 @@
 </div>
 
 </div>
+{{-- 
+<div class="modal fade text-black" id="availableRoomsModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Other Available
+                    Rooms</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @foreach ($this->findAvailableRoom() as $room)
+                    <h5>{{ $room->building->name }}, Floor {{ $room->floor }}, Room
+                        {{ $room->room_number }}</h5>
+
+                    <hr>
+                @endforeach
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div> --}}
+
 </div>

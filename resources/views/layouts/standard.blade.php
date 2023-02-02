@@ -36,6 +36,23 @@
             myInput.focus()
         })
     </script>
+
+<script>
+    $(function(){
+        $('#availableRoomsModal').modal({
+            backdrop: true,
+            keyboard: true
+        });
+        $('#modalButton').click(function(){
+    
+           $available_rooms = $this->findAvailableRoom();
+        
+    
+            $('#availableRoomsModal').modal('toggle');
+            return false;
+        });
+    });
+    </script>
 </body>
 
 </html>

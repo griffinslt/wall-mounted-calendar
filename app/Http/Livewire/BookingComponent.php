@@ -24,12 +24,15 @@ class BookingComponent extends Component
 
     public $current_booking;
 
+    public $available_rooms_button_pressed;
+
     public function boot()
     {
         //$this->in_use = false;
         $this->checked_in = false;
         $this->current_booking = null;
         $this->time = $this->time = Carbon::now();
+        $this->available_rooms_button_pressed= false;
     }
 
     public function checkInUse($room)
@@ -154,7 +157,7 @@ class BookingComponent extends Component
     {
         $this->refreshBooking();
         $this->emit('refreshComponent');
-        $inUse = [];
+
         $availableRooms = [];
         foreach ($this->rooms as $room) {
             if ($room->building_id == $this->room->building_id and $room->floor == $this->room->floor and $room->id != $this->room->id and !$this->checkInUse($room)) {
@@ -212,6 +215,12 @@ class BookingComponent extends Component
         $second_closest = array_shift($buildings);
         $twoClosest = [array_search($closest, $originalBuildings), array_search($second_closest, $originalBuildings)];
         return $twoClosest;
+    }
+
+    public function pressAvailableRoomsButton()
+    {
+        $this->available_rooms_button_pressed = !$this->available_rooms_button_pressed;
+        return $this->available_rooms_button_pressed;
     }
 
     public function render()

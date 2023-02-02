@@ -16,7 +16,7 @@ class FacilitySeeder extends Seeder
     public function run()
     {
         $f = new Facility;
-        $f->name = 'WiFi';
+        $f->name = 'Disabled Access';
         $f->save();
 
         $f = new Facility;
