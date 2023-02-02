@@ -156,7 +156,6 @@ class BookingComponent extends Component
     public function findAvailableRoom()
     {
         $this->refreshBooking();
-        $this->emit('refreshComponent');
 
         $availableRooms = [];
         foreach ($this->rooms as $room) {
