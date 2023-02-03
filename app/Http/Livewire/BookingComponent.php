@@ -22,7 +22,7 @@ class BookingComponent extends Component
 
     //public $in_use;
 
-    public $checked_in;
+    // public $checked_in;
 
     public $current_booking;
 
@@ -31,8 +31,7 @@ class BookingComponent extends Component
     public function boot()
     {
         //$this->in_use = false;
-        $this->checked_in = false;
-        $this->current_booking = null;
+        
         $this->time = $this->time = Carbon::now();
         $this->available_rooms_button_pressed = false;
     }
@@ -92,11 +91,17 @@ class BookingComponent extends Component
 
     public function isCheckedIn()
     {
-        return $this->checked_in;
+        return $this->current_booking->checked_in;
     }
     public function checkIn()
     {
-        $this->checked_in = true; //when meeting ends this should then be set to false
+
+        $this->current_booking->checked_in = true;
+        $this->current_booking->save();
+        $this->refreshBooking();
+        $this->emit('refreshComponent');
+        
+        //$this->checked_in = true; //when meeting ends this should then be set to false
     }
 
     public function getNextBooking()
@@ -148,6 +153,7 @@ class BookingComponent extends Component
         $b->duration = $duration;
         $b->room_id = $this->room->id;
         $b->user_id = null;
+        $b->checked_in = false;
         $b->save();
         //$this->in_use = true;
         $this->refreshBooking();
@@ -160,8 +166,8 @@ class BookingComponent extends Component
     {
         $newDuration = $this->getTime()->diffInMinutes(Carbon::parse($this->current_booking->time_of_booking));
         $this->current_booking->duration = $newDuration;
+        $this->current_booking->checked_in = false;
         $this->current_booking->save();
-        $this->checked_in = false;
         $this->available_rooms_button_pressed = false;
         $this->refreshBooking();
         $this->emit('refreshComponent');

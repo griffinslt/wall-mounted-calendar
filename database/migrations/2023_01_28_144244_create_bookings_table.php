@@ -19,6 +19,7 @@ return new class extends Migration
 
             $table->integer('duration'); //in minutes
             $table->dateTime('time_of_booking');
+            $table->boolean('checked_in')->default(false);
 
             $table->unsignedBigInteger('room_id');
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade')->onUpdate('cascade');

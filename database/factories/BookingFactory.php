@@ -19,6 +19,7 @@ class BookingFactory extends Factory
         return [
             'duration' => fake()->randomElement(['15','30', '60', '90', '120']),
             'time_of_booking' => fake()->dateTime(),
+            'checked_in' => false,
             'room_id' =>fake()->numberBetween(1,200),
             'user_id' => fake()->numberBetween(1,100),
 
