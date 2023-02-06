@@ -99,6 +99,7 @@ class BookingController extends Controller
             $message->to('support@univeristy.com');
         });
         //return view('make_booking', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
+        session()->flash('message', 'Issue Reported');
         return redirect()->route('booking.create', ['room' => $room]);
     }
 }

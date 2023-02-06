@@ -16,6 +16,7 @@
 <body>
     @livewire('livewire-ui-modal')
     @livewireScripts
+    
 
     @yield('content')
     <script src="/js/timeout.min.js" defer></script>

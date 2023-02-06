@@ -1,4 +1,15 @@
 <div>
+    @if (\Session::has('message'))
+    <div class="alert alert-success">
+        <ul>
+            {!! \Session::get('message') !!}
+        </ul>
+        @php
+            header('Refresh:2');
+        @endphp
+
+    </div>
+@endif
     <div wire:poll.30000ms>
         @php
             $this->refreshBooking();
