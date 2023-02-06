@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->integer("room_id")->nullable();
-            $table->string("role");
+            // $table->string("role");
         });
     }
 
