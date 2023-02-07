@@ -17,12 +17,11 @@
         @if (!$this->checkInUse($this->room))
 
             <div class="containter-fluid bg-success text-white">
-                <div class='container-fluid'>
+                <div class='container-fluid py-2'>
                     <div class="row justify-content-center align-items-center g-2">
                         <div class="col-10">
                             <h1>Room Available</h1>
                         </div>
-
                         <div class="col">
                             <h1>{{ $this->getTime()->format('H:i') }}</h1>
                         </div>
@@ -108,6 +107,8 @@
                 <div class="containter-fluid bg-{{ $bgColour }} text-{{ $textColour }}">
                     <div class='container-fluid'>
                         <div class="row justify-content-center align-items-center g-2">
+                            <p></p>
+                            <p></p>
                             <div class="col-10">
                                 <h1>Current Booking Ends At
                                     {{ Carbon\Carbon::parse($this->current_booking->time_of_booking)->addMinutes($this->current_booking->duration)->format('H:i') }}

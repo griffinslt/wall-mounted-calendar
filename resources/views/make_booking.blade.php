@@ -56,24 +56,14 @@
                         <a href ="{{route('booking.submit-issue', ['room'=>$room, 'issue' =>$facility->name])}}"class='btn btn-info btn-lg'>{{ $facility->name }}</a>
                         <hr>
                     @endforeach
+                    <h5>Any other problems, email support@univeristy.com</h5>
+                </div>
+                <div class="modal-footer">
+                    <button data-bs-target="#reportIssueModal" data-bs-toggle="modal" type="button" class='btn btn-primary btn-lg '>Go back</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade text-black" id="notifiedModal" tabindex="-1" aria-labelledby="exampleModalLabel2"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel2">Thank You</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h1>Our Support Team has been notified</h1>
-                
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 @endsection
