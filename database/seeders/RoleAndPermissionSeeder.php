@@ -66,15 +66,26 @@ class RoleAndPermissionSeeder extends Seeder
             'create-booking',
             'view-booking',
             'view-room',
+            'view-user',
         
         ]);
 
         $staffRole->givePermissionTo([
-            
+            'create-booking',
+            'view-booking',
+            'edit-booking',
+            'delete-booking',
+            'create-room',
+            'update-room',
+            'view-room',
+            'delete-room',
+            'view-user',
         ]);
 
         $studentRole->givePermissionTo([
-            
+            'create-booking',
+            'view-booking',
+            'view-room',
         ]);
     
     
