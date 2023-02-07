@@ -1,4 +1,4 @@
-@extends('layouts.standard')
+@extends('layouts.tablet')
 
 @section('title', 'Make a Booking')
 

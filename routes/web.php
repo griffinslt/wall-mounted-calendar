@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,5 +32,12 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/tablet-view/{room}',[BookingController::class, 'create'])->name('booking.create');
 Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');
+
+Route::get('/bookings', [BookingController::class, 'show'])->name('booking.show');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+Route::get('/admin', function () {
+    return view('admin');
+});
 
 require __DIR__.'/auth.php';

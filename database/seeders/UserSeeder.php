@@ -22,6 +22,8 @@ class UserSeeder extends Seeder
         $u->password = bcrypt('password');
         // $u->role = "admin";
         $u->save();
+        $u->assignRole('Admin');
+
 
         $u2 = new User();
         $u2->name = 'Sam';
@@ -29,6 +31,10 @@ class UserSeeder extends Seeder
         $u2->password = bcrypt('password1');
         // $u2->role = "student";
         $u2->save();
+        $u2->assignRole('Student');
+
+
+        
 
         $u3 = new User();
         $u3->name = 'Liam';
@@ -36,6 +42,8 @@ class UserSeeder extends Seeder
         $u3->password = bcrypt('password2');
         // $u3->role = 'lecturer';
         $u3->save();
+        $u3->assignRole('Lecturer');
+        $u3->assignRole('Support Staff');
 
         User::factory()
             ->hasBookings(2)

@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
-use App\Models\Building;
-use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
-class BookingController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +14,9 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+
+        return view('users', ['users' => $users]);
     }
 
     /**
@@ -25,12 +24,9 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Room $room)
+    public function create()
     {
-        $bookings = Booking::all();
-        $rooms = Room::all();
-        $buildings = Building::all();
-        return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
+        //
     }
 
     /**
@@ -50,10 +46,9 @@ class BookingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        $bookings = Booking::all();
-        return view('bookings', ['bookings' => $bookings]);
+        //
     }
 
     /**
@@ -88,19 +83,5 @@ class BookingController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function reportIssue(Room $room, String $issue)
-    {
-
-        Mail::raw("Tablet from room " .$room->room_number. " on level " . $room->level. "in building " . $room->building->name . " on " .  $room->building->campus . " Campus is have an issue with " . $issue, function($message)
-        {
-            $message->from('tablet-issue@university.com', 'Laravel');
-            
-            $message->to('support@univeristy.com');
-        });
-        //return view('make_booking', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
-        session()->flash('message', 'Issue Reported');
-        return redirect()->route('booking.create', ['room' => $room]);
     }
 }

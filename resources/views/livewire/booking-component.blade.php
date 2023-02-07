@@ -10,7 +10,7 @@
 
     </div>
 @endif
-    <div wire:poll.30000ms>
+    <div wire:poll.keep-alive.30000ms>
         @php
             $this->refreshBooking();
         @endphp
