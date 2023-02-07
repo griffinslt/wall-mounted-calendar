@@ -14,6 +14,17 @@
 <title>@yield('title')</title>
 
 <body>
+    @if (\Session::has('message'))
+    <div class="alert alert-success">
+        <ul>
+            {!! \Session::get('message') !!}
+        </ul>
+        @php
+            header('Refresh:2');
+        @endphp
+
+    </div>
+@endif
     @livewire('livewire-ui-modal')
     @livewireScripts
     

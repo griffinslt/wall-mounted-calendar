@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::get('/', function () {
     return view('welcome');
 });
@@ -35,6 +36,8 @@ Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue
 
 Route::get('/bookings', [BookingController::class, 'show'])->name('booking.show');
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+
 
 Route::get('/admin', function () {
     return view('admin');

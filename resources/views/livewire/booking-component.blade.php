@@ -1,15 +1,15 @@
 <div>
     @if (\Session::has('message'))
-    <div class="alert alert-success">
-        <ul>
-            {!! \Session::get('message') !!}
-        </ul>
-        @php
-            header('Refresh:2');
-        @endphp
+        <div class="alert alert-success">
+            <ul>
+                {!! \Session::get('message') !!}
+            </ul>
+            @php
+                header('Refresh:2');
+            @endphp
 
-    </div>
-@endif
+        </div>
+    @endif
     <div wire:poll.keep-alive.30000ms>
         @php
             $this->refreshBooking();
