@@ -85,9 +85,12 @@ class BookingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Booking $booking)
     {
-        //
+        $booking->delete();
+        return redirect()
+                ->route('bookings.show')
+                ->with('message', 'Booking was Deleted.');
     }
 
     public function reportIssue(Room $room, String $issue)

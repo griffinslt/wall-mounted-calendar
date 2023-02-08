@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -34,9 +34,10 @@ Route::middleware('auth')->group(function () {
 Route::get('/tablet-view/{room}',[BookingController::class, 'create'])->name('booking.create');
 Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');
 
-Route::get('/bookings', [BookingController::class, 'show'])->name('booking.show');
+Route::get('/bookings', [BookingController::class, 'show'])->name('bookings.show');
+Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 
 Route::get('/admin', function () {
