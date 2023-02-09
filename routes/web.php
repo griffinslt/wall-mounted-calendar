@@ -34,14 +34,14 @@ Route::middleware('auth')->group(function () {
 Route::get('/tablet-view/{room}',[BookingController::class, 'create'])->name('booking.create');
 Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');
 
-Route::get('/bookings', [BookingController::class, 'show'])->name('bookings.show');
-Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/admin/bookings', [BookingController::class, 'show'])->name('bookings.show');
+Route::delete('/admin/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
+Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 
 Route::get('/admin', function () {
-    return view('admin');
+    return view('admin.admin');
 });
 
 require __DIR__.'/auth.php';

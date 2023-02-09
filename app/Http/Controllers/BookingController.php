@@ -30,7 +30,7 @@ class BookingController extends Controller
         $bookings = Booking::all();
         $rooms = Room::all();
         $buildings = Building::all();
-        return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
+        return view('admin.tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
     }
 
     /**
@@ -53,7 +53,7 @@ class BookingController extends Controller
     public function show()
     {
         $bookings = Booking::all();
-        return view('bookings', ['bookings' => $bookings]);
+        return view('admin.bookings', ['bookings' => $bookings]);
     }
 
     /**

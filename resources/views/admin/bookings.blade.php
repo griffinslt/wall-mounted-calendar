@@ -1,8 +1,9 @@
-@extends('layouts.standard')
+@extends('layouts.admin')
 
 @section('title', 'Bookings Page')
 
 @section('content')
+
 
     <h1 class="mx-5">Bookings Page</h1>
 
@@ -82,6 +83,8 @@
             });
         });
     </script>
+
+
 
 
 @endsection
