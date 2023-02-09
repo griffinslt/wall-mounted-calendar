@@ -44,7 +44,7 @@
           <hr>
           <a href="{{route('users.index')}}"><h5>Users</h5></a>
           <hr>
-          <a href=""><h5>Rooms</h5></a>
+          <a href="{{route('rooms.index')}}"><h5>Rooms</h5></a>
           <hr>
           <a href=""><h5>Permissions</h5></a>
 
