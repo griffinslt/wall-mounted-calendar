@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleAndPermissionController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,9 @@ Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('
 
 Route::get('/admin/rooms', [RoomController::class, 'index'])->name('rooms.index');
 Route::delete('/admin/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
+
+Route::get('/admin/permissions', [RoleAndPermissionController::class, 'index'])->name('permissions.index');
+Route::get('/admin/permissions/remove-permission-from-role/{role}/{permission}', [RoleAndPermissionController::class, 'removePermissionFromRole'])->name('permissions.remove-permission-from-role');
 
 
 Route::get('/admin', function () {

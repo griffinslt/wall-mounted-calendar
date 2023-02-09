@@ -6,7 +6,7 @@
 
     <h1 class="mx-5">User Page</h1>
 
-    <div class='container-sm'>
+    <div class='container-fluid mx-5'>
         <table class="table table-hover">
             <thead>
                 <tr>

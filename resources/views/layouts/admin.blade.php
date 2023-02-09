@@ -30,10 +30,14 @@
 
     
 
-    {{-- <div class = "container-fluid"><button class="btn btn-primary " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><span class="navbar-toggler-icon"><h1>➤</h1>  </button></div> --}}
+    
+<div class = "container-fluid">
     <img data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" src="/images/hamburger.png" alt="">
-    @yield('content')
+    <a href="/admin/bookings"class="badge rounded-pill bg-primary">Home</a>
+    <a href="/dashboard" class="badge rounded-pill bg-primary">Account</a>
 
+    @yield('content')
+</div>
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
         <div class="offcanvas-header">
           <h3 class="offcanvas-title" id="offcanvasScrollingLabel">Admin Pages</h3>
@@ -46,7 +50,7 @@
           <hr>
           <a href="{{route('rooms.index')}}"><h5>Rooms</h5></a>
           <hr>
-          <a href=""><h5>Permissions</h5></a>
+          <a href="{{route('permissions.index')}}"><h5>Permissions</h5></a>
 
         </div>
       </div>
