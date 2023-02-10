@@ -5,7 +5,7 @@
 @section('content')
 
 
-    <h1 class="mx-5">Bookings Page</h1>
+    <h1 class="px-5">Bookings Page</h1>
 
     <div class='container-fluid'>
         <table class="table table-hover">
@@ -37,7 +37,7 @@
                         <td>{{ $booking->room->room_number }}</td>
                         <td>{{ $booking->room->building->name }}</td>
                         <td>{{ $booking->room->building->campus }}</td>
-                        <td><button class="btn btn-success">Edit</button> 
+                        <td><a href = "{{route('bookings.edit', ['booking' => $booking])}}" class="btn btn-success">Edit</a> 
                             <button data-bs-target="#deleteModal"
                             data-bs-toggle="modal" data-url="{{route('bookings.destroy', ['booking' => $booking->id])}}"
                             class='btn btn-danger delete-booking'>Delete</button>

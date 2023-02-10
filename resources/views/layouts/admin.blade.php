@@ -25,13 +25,24 @@
 
     </div>
 @endif
+@if (\Session::has('error'))
+    <div class="alert alert-danger">
+        <ul>
+            {!! \Session::get('error') !!}
+        </ul>
+        @php
+            header('Refresh:2');
+        @endphp
+
+    </div>
+@endif
 
     @livewireScripts
 
     
 
     
-<div class = "container-fluid">
+<div class = "container-fluid px-5">
     <img data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" src="/images/hamburger.png" alt="">
     <a href="/admin/bookings"class="badge rounded-pill bg-primary">Home</a>
     <a href="/dashboard" class="badge rounded-pill bg-primary">Account</a>

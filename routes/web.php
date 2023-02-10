@@ -37,6 +37,9 @@ Route::get('/tablet-view/{room}',[BookingController::class, 'create'])->name('bo
 Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');
 
 Route::get('/admin/bookings', [BookingController::class, 'show'])->name('bookings.show');
+Route::get('/admin/bookings/{booking}', [BookingController::class, 'edit'])->name('bookings.edit');
+Route::post('/admin/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
+
 Route::delete('/admin/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
 Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
