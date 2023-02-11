@@ -43,6 +43,7 @@ Route::post('/admin/bookings/{booking}', [BookingController::class, 'update'])->
 Route::delete('/admin/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
 Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/admin/users/{user}', [UserController::class, 'edit'])->name('users.edit');
 
 Route::get('/admin/rooms', [RoomController::class, 'index'])->name('rooms.index');
 Route::delete('/admin/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');

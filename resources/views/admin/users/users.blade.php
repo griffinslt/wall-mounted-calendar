@@ -6,7 +6,7 @@
 
     <h1 class="mx-5">User Page</h1>
 
-    <div class='container-fluid mx-5'>
+
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -32,7 +32,7 @@
 
 
                         </td>
-                        <td><button class="btn btn-success">Edit</button> 
+                        <td><a href= "{{route('users.edit', ['user' => $user->id])}}" class="btn btn-success">Edit</a> 
                             <button data-bs-target="#deleteModal"
                                 data-bs-toggle="modal" data-url="{{route('users.destroy', ['user' => $user->id])}}"
                                 class='btn btn-danger delete-user'>Delete</button>
@@ -41,7 +41,7 @@
                 @endforeach
             </tbody>
         </table>
-    </div> 
+
 
 
 

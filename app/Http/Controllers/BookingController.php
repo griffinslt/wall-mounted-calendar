@@ -109,11 +109,6 @@ class BookingController extends Controller
             return redirect()->route('bookings.show')->with('error', 'Booking was Not Updated.');
         }
 
-
-
-
-
-        return $request;
     }
 
     public function checkInUse($room, $time)

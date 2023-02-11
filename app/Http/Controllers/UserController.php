@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -16,7 +17,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return view('admin.users', ['users' => $users]);
+        return view('admin.users.users', ['users' => $users]);
     }
 
     /**
@@ -57,9 +58,17 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+        $roles_to_show = array();
+        foreach ($roles as $role) {
+            if (!$user->roles->contains($role)) {
+                array_push($roles_to_show, $role);
+            }
+        }
+        $roles_to_show = collect(array_unique($roles_to_show));
+        return view('admin.users.edit', ['user' => $user, 'roles' => $roles_to_show]);
     }
 
     /**
