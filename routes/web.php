@@ -39,18 +39,24 @@ Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue
 Route::get('/admin/bookings', [BookingController::class, 'show'])->name('bookings.show');
 Route::get('/admin/bookings/{booking}', [BookingController::class, 'edit'])->name('bookings.edit');
 Route::post('/admin/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
-
 Route::delete('/admin/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+
 Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
 Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::get('/admin/users/{user}', [UserController::class, 'edit'])->name('users.edit');
+
 Route::get('/admin/users/remove-role/{user}/{role}', [UserController::class, 'removeRoleFromUser'])->name('users.removeRoleFromUser');
 Route::get('/admin/users/add-role/{user}/{role}', [UserController::class, 'addRoleToUser'])->name('users.addRoleToUser');
 
 
 
 Route::get('/admin/rooms', [RoomController::class, 'index'])->name('rooms.index');
+Route::get('/admin/rooms/{room}', [RoomController::class, 'edit'])->name('rooms.edit');
+Route::post('/admin/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
+Route::get('/admin/rooms/add-facility/{room}/{facility}', [RoomController::class, 'addFacilityToRoom'])->name('rooms.add-facility');
+Route::get('/admin/rooms/remove-facility/{room}/{facility}', [RoomController::class, 'removeFacilityFromRoom'])->name('rooms.remove-facility');
 Route::delete('/admin/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
+
 
 Route::get('/admin/permissions', [RoleAndPermissionController::class, 'index'])->name('permissions.index');
 Route::get('/admin/permissions/remove-permission-from-role/{role}/{permission}', [RoleAndPermissionController::class, 'removePermissionFromRole'])->name('permissions.remove-permission-from-role');

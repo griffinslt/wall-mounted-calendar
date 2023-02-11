@@ -15,11 +15,7 @@
                 <select name="duration" class="form-select" id="floatingSelect" aria-label="Floating label select example">
 
                     <option value="15">15 Minutes</option>
-
                     <option value="30">30 Minutes</option>
-
-
-
                     <option value="45">45 Minutes </option>
                     <option value="60">1 Hour</option>
                     <option value="90">1.5 Hours</option>

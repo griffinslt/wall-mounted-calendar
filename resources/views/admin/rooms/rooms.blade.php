@@ -16,8 +16,8 @@
                     <th scope="col">Floor Number</th>
                     <th scope="col">Building</th>
                     <th scope="col">Campus</th>
-                    <th scope="col">Facilities</th>
                     <th scope="col">Capacity</th>
+                    <th scope="col">Facilities</th>
                     <th scope="col">Bookings</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -29,7 +29,7 @@
                         <td>{{ $room->room_number }}</td>
                         <td>{{ $room->floor }}</td>
                         <td>{{ $room->building->name }}</td>
-                        <td>{{ $room->building->campus }}</td>
+                        <td>{{ $room->capacity }}</td>
                         <td>{{ $room->building->name }}</td>
                         <td>
                         @foreach ($room->facilities as $facility)
@@ -37,7 +37,7 @@
                         @endforeach
                     </td>
                         <td><button class= "btn btn-info">Bookings</button></td>
-                        <td><button class="btn btn-success">Edit</button> 
+                        <td><a href="{{route('rooms.edit', ['room' => $room->id])}}" class="btn btn-success">Edit</a> 
                             <button data-bs-target="#deleteModal"
                             data-bs-toggle="modal" data-url="{{route('rooms.destroy', ['room' => $room->id])}}"
                             class='btn btn-danger delete-booking'>Delete</button>
