@@ -57,7 +57,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-          <a href="{{route('bookings.show')}}"><h5>Bookings</h5></a>
+          <a href="{{route('bookings.index')}}"><h5>Bookings</h5></a>
           <hr>
           <a href="{{route('users.index')}}"><h5>Users</h5></a>
           <hr>

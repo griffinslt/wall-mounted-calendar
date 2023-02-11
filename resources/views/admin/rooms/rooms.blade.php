@@ -36,7 +36,7 @@
                             <p>{{$facility->name}}</p>
                         @endforeach
                     </td>
-                        <td><button class= "btn btn-info">Bookings</button></td>
+                        <td><a href = "{{route('bookings.index-for-room', ['room' => $room->id])}}" class= "btn btn-info">Bookings</a></td>
                         <td><a href="{{route('rooms.edit', ['room' => $room->id])}}" class="btn btn-success">Edit</a> 
                             <button data-bs-target="#deleteModal"
                             data-bs-toggle="modal" data-url="{{route('rooms.destroy', ['room' => $room->id])}}"

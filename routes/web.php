@@ -36,7 +36,11 @@ Route::middleware('auth')->group(function () {
 Route::get('/tablet-view/{room}',[BookingController::class, 'create'])->name('booking.create');
 Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');
 
-Route::get('/admin/bookings', [BookingController::class, 'show'])->name('bookings.show');
+Route::get('/admin/bookings', [BookingController::class, 'index'])->name('bookings.index');
+Route::get('/admin/rooms/{room}/bookings', [BookingController::class, 'indexForRoom'])->name('bookings.index-for-room');
+Route::get('/admin/users/{user}/bookings', [BookingController::class, 'indexForUser'])->name('bookings.index-for-user');
+
+
 Route::get('/admin/bookings/{booking}', [BookingController::class, 'edit'])->name('bookings.edit');
 Route::post('/admin/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
 Route::delete('/admin/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');

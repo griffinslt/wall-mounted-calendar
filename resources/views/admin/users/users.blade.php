@@ -24,7 +24,7 @@
                         <th scope="row">{{ $user->id }}</th>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td><button class="btn btn-info">Go There</button></td>
+                        <td><a href="{{route('bookings.index-for-user', ['user' => $user->id])}}" class="btn btn-info">Bookings</a></td>
                         <td>
                             @foreach ($user->getRoleNames() as $role)
                                 <p>{{ $role }}</p>

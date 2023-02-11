@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\Building;
 use App\Models\Room;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -18,7 +19,19 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
+        $bookings = Booking::all();
+        return view('admin.bookings.bookings', ['bookings' => $bookings]);
+    }
+
+    public function indexForRoom(Room $room)
+    {
+        $bookings = $room->bookings;
+        return view('admin.bookings.bookings', ['bookings' => $bookings]);
+    }
+    public function indexForUser(User $user)
+    {
+        $bookings = $user->bookings;
+        return view('admin.bookings.bookings', ['bookings' => $bookings]);
     }
 
     /**
@@ -53,8 +66,7 @@ class BookingController extends Controller
      */
     public function show()
     {
-        $bookings = Booking::all();
-        return view('admin.bookings.bookings', ['bookings' => $bookings]);
+        
     }
 
     /**
@@ -103,10 +115,10 @@ class BookingController extends Controller
             $booking->time_of_booking = $time;
             $booking->save();
 
-            return redirect()->route('bookings.show')->with('message', 'Booking was Updated.');
+            return redirect()->route('bookings.index')->with('message', 'Booking was Updated.');
 
         } else{
-            return redirect()->route('bookings.show')->with('error', 'Booking was Not Updated.');
+            return redirect()->route('bookings.index')->with('error', 'Booking was Not Updated.');
         }
 
     }
@@ -147,7 +159,7 @@ class BookingController extends Controller
     {
         $booking->delete();
         return redirect()
-            ->route('bookings.show')
+            ->route('bookings.index')
             ->with('message', 'Booking was Deleted.');
     }
 
