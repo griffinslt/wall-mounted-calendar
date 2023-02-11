@@ -78,9 +78,21 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Role $role, User $user)
     {
-        //
+        
+    }
+
+    public function removeRoleFromUser(User $user, Role $role)
+    {
+        $user->removeRole($role->name);
+        return redirect()->route('users.edit', ['user' => $user->id])->with('message', 'Role was removed');
+    }
+
+    public function addRoleToUser(User $user, Role $role)
+    {
+        $user->assignRole($role->name);
+        return redirect()->route('users.edit', ['user' => $user->id])->with('message', 'Role was added');
     }
 
     /**

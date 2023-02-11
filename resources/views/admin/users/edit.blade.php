@@ -13,7 +13,7 @@
                 <div class="col">
                     <h3>{{ $role->name }} </h3>
                 </div>
-                <div class="col"><a href="" class="btn btn-danger">Remove Role From User</a></div>
+                <div class="col"><a href="{{route('users.removeRoleFromUser', ['user'=> $user, 'role' => $role])}}" class="btn btn-danger">Remove Role From User</a></div>
                 <div class='col'></div>
             </div>
         @endforeach
@@ -29,7 +29,7 @@
                         <div class="col">
                             <h3>{{ $role->name }} </h3>
                         </div>
-                        <div class="col"><a class="btn btn-primary" href="">Add role to user</a></div>
+                        <div class="col"><a class="btn btn-primary" href="{{route('users.addRoleToUser', ['user'=> $user, 'role' => $role])}}">Add role to user</a></div>
                         <div class='col'></div>
 
                     </div>
