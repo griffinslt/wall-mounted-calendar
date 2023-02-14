@@ -19,7 +19,7 @@ class RoleAndPermissionController extends Controller
         $roles = Role::all();
         $permissions = Permission::all();
 
-        return view("admin.permissions", ['roles' => $roles, 'permissions' => $permissions]);
+        return view("admin.permissions.permissions", ['roles' => $roles, 'permissions' => $permissions]);
     }
 
     /**
@@ -54,15 +54,21 @@ class RoleAndPermissionController extends Controller
         //
     }
 
+    
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function editRole(Role $role)
     {
-        //
+        return view('admin.permissions.edit-role', ['role' => $role]);
+    }
+
+    public function editPermission(Permission $permission)
+    {
+        return view('admin.permissions.edit-permission', ['permission' => $permission,]);
     }
 
     /**
@@ -72,9 +78,28 @@ class RoleAndPermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateRole(Request $request, Role $role)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required'
+        ]);
+
+        $role->name = $validatedData['name'];
+        $role->save();
+
+        return redirect()->route("permissions.edit-role", ['role'=>$role])->with('message', "Role Updated");
+    }
+
+    public function updatePermission(Request $request, Permission $permission)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required'
+        ]);
+
+        $permission->name = $validatedData['name'];
+        $permission->save();
+
+        return redirect()->route("permissions.edit-permission", ['permission'=>$permission])->with('message', "Permission Updated");
     }
 
     /**
@@ -112,12 +137,18 @@ class RoleAndPermissionController extends Controller
                 ->with('message', 'Permission name updated.');
     }
 
+    public function editRolePermissions(Permission $permission)
+    {
+        $roles = Role::all();
+        return view('admin.permissions.add-permission-to-role', ['permission'=>$permission, 'roles'=>$roles]);
+    }
     public function addPermissionToRole(Permission $permission, Role $role)
     {
+        // dd($role, $permission);
         $role->givePermissionTo($permission->name);
         return redirect()
                 ->route('permissions.index')
-                ->with('message', 'Permission added to role.');
+                ->with('message', 'Permission ('.$permission->name. ') added to role.');
     }
 
     public function removePermission(Permission $permission)
@@ -126,6 +157,14 @@ class RoleAndPermissionController extends Controller
         return redirect()
                 ->route('permissions.index')
                 ->with('message', 'Permission removed.');
+    }
+
+    public function removeRole(Role $role)
+    {
+        $role->delete();
+        return redirect()
+                ->route('permissions.index')
+                ->with('message', 'Role removed.');
     }
 
 

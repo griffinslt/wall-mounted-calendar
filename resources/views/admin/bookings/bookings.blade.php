@@ -4,10 +4,14 @@
 
 @section('content')
 
+<div class="row px-5">
+    <div class="col"><h1>Bookings Page</h1></div>
+    <div class="d-flex justify-content-end col"><a href="">Create Booking</a>
+    </div>
+</div>
+    
 
-    <h1 class="px-5">Bookings Page</h1>
 
-    <div class='container-fluid'>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -30,7 +34,7 @@
                         <td>{{ $booking->time_of_booking }}</td>
                         <td>{{ $booking->duration }}</td>
                         @if ( !is_null($booking->user_id)  )
-                            <td>{{ $booking->user->name}} (user {{$booking->user->id}})</td>
+                            <td><a href="{{route('users.edit', ['user' => $booking->user->id])}}">{{ $booking->user->name}} (user {{$booking->user->id}}) </a></td>
                         @else
                             <td>Tablet Booking</td>
                         @endif
@@ -45,7 +49,7 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
+
 
 
     <div class="modal fade" id="deleteModal" tabindex="-1">

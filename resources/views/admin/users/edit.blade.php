@@ -4,6 +4,35 @@
 
 @section('content')
     <div class="container-fluid px-5">
+        <h1>Edit User</h1>
+
+        <form action="{{route('users.update', ['user'=>$user])}}" method="post">
+            @csrf
+            <div class="row">
+                <div class='col'>
+                    <h5>Email:</h5>
+                </div>
+                <div class="col"><input type="text" name="email" value="{{ $user->email }}"></div>
+                <div class="col"></div>
+                <div class="col"></div>
+<p></p>
+            </div>
+            <div class="row">
+                <div class='col'>
+                    <h5>Name: </h5>
+                </div>
+                <div class='col'><input type="text" name="name" value="{{ $user->name }}"></div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+<p></p>
+
+
+        
+        
+        <p></p>
+
+
         <h2>Current Roles</h2>
         <p></p>
 
@@ -39,8 +68,9 @@
         <hr>
 
 
-        <h5>Want to change name, password or email? click <a class="btn btn-primary" href="/dashboard">here</a></h5>
 
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
     </div>
 
 

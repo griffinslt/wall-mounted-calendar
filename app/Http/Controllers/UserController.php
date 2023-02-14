@@ -78,9 +78,21 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Role $role, User $user)
+    public function update(Request $request, User $user)
     {
+
+        $validatedData = $request->validate([
+            'email' => 'required|email|unique:users,email',
+            'name' => 'required'
+        ]);
+
+        $user->email = $validatedData['email'];
+        $user->name = $validatedData['name'];
+        $user->save();
+
         
+
+        return redirect()->route('users.index')->with('message','User ('.$user->name.') updated');
     }
 
     public function removeRoleFromUser(User $user, Role $role)

@@ -5,7 +5,11 @@
 @section('content')
 
 
-    <h1 class="mx-5">Rooms Page</h1>
+<div class="row px-5">
+    <div class="col"><h1>Rooms Page</h1></div>
+    <div class="d-flex justify-content-end col"><a href="">Create Room</a>
+    </div>
+</div>
 
     <div class='container-fluid px-5'>
         <table class="table table-hover">

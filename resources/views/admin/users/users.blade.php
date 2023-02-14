@@ -4,7 +4,11 @@
 
 @section('content')
 
-    <h1 class="mx-5">User Page</h1>
+<div class="row px-5">
+    <div class="col"><h1>Users Page</h1></div>
+    <div class="d-flex justify-content-end col"><a href="">Create User</a>
+    </div>
+</div>
 
 
         <table class="table table-hover">
