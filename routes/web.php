@@ -57,10 +57,12 @@ Route::get('/admin/users/remove-role/{user}/{role}', [UserController::class, 're
 Route::get('/admin/users/add-role/{user}/{role}', [UserController::class, 'addRoleToUser'])->name('users.addRoleToUser');
 
 
-
+Route::post('/admin/rooms/', [RoomController::class, 'store'])->name('rooms.store');
 Route::get('/admin/rooms', [RoomController::class, 'index'])->name('rooms.index');
+Route::get('/admin/rooms/create', [RoomController::class, 'create'])->name('rooms.create');
 Route::get('/admin/rooms/{room}', [RoomController::class, 'edit'])->name('rooms.edit');
 Route::post('/admin/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
+
 Route::get('/admin/rooms/add-facility/{room}/{facility}', [RoomController::class, 'addFacilityToRoom'])->name('rooms.add-facility');
 Route::get('/admin/rooms/remove-facility/{room}/{facility}', [RoomController::class, 'removeFacilityFromRoom'])->name('rooms.remove-facility');
 Route::delete('/admin/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');

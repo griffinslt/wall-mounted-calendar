@@ -7,7 +7,7 @@
 
 <div class="row px-5">
     <div class="col"><h1>Rooms Page</h1></div>
-    <div class="d-flex justify-content-end col"><a href="">Create Room</a>
+    <div class="d-flex justify-content-end col"><a href="{{route('rooms.create')}}">Create Room</a>
     </div>
 </div>
 

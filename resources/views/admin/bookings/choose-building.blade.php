@@ -9,11 +9,12 @@
 
     <div class="container-fluid px-5">
     
-        @foreach ($buildings as $building)
+        @foreach ($buildings->sortBy('campus')->sortBy('name') as $building)
             <a class = 'btn btn-primary' href="{{route('bookings.admin.create', ['building'=> $building->id])}}"> {{$building->name}} ({{$building->campus}}) </a>
             <p></p>
         @endforeach
     
+        <a class="btn btn-danger" href="/admin/bookings">Cancel</a>
     </div>
 
 

@@ -29,7 +29,8 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+        $buildings = Building::all();
+        return view('admin.rooms.create', ['buildings' => $buildings]);
     }
 
     /**
@@ -40,7 +41,28 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'capacity' => 'required|integer',
+            'room_number' => 'required|integer',
+            'floor' => 'required|integer',
+            'building' => 'required',
+        ]);
+
+        $building = Building::find($validatedData['building']);
+        if ($validatedData['floor'] < $building->number_of_floors) {
+            $room = new Room;
+        $room->capacity = $validatedData['capacity'];
+        $room->room_number = $validatedData['room_number'];
+        $room->floor = $validatedData['floor'];
+        $room->building_id = $validatedData['building'];
+        $room->save();
+
+        return redirect()->route('rooms.edit', ['room' => $room->id])->with('message', "Room Created");
+        } else {
+            return redirect()->route('rooms.index')->with('error', "Room Not Created");
+        }
+        
+
     }
 
     /**
@@ -110,7 +132,7 @@ class RoomController extends Controller
         $room->save();
 
 
-        return redirect()->route('rooms.edit', ['room' => $room->id])->with('message', "Post Updated");
+        return redirect()->route('rooms.edit', ['room' => $room->id])->with('message', "Room Updated");
     }
 
     /**
