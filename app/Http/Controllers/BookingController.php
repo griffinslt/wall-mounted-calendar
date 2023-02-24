@@ -72,7 +72,41 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'room_id' => 'required',
+            'duration' => 'required',
+            'day' => 'required',
+            'month' => 'required',
+            'year' => 'required',
+            'hour' => 'required',
+            'minute' => 'required',
+        ]);
+
+        $room = Room::find($validatedData['room_id']);
+
+        $timeCarbon = Carbon::create(
+            $validatedData['year'],
+            $validatedData['month'],
+            $validatedData['day'],
+            $validatedData['hour'],
+            $validatedData['minute'],
+            0,
+            'Europe/London'
+        );
+        $time = $timeCarbon->format('Y-m-d H:i:s');
+        if(!$this->checkInUse($room, $timeCarbon) and $timeCarbon->gt(Carbon::now())){
+            $booking = new Booking;
+            $booking->duration = $validatedData['duration'];
+            $booking->time_of_booking = $time;
+            $booking->user_id = 1;
+            $booking->room_id = $validatedData['room_id'];
+            $booking->save();
+
+            return redirect()->route('bookings.index')->with('message', 'Booking was Created.');
+
+        } else{
+            return redirect()->route('bookings.index')->with('error', 'Booking was Not Created.');
+        }
     }
 
     /**

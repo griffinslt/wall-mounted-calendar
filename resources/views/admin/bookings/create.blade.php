@@ -8,11 +8,11 @@
     <h1 class="mx-5">Make a booking in {{$building->name}}</h1>
 
     <div class="container-fluid px-5">
-    <form method="POST" action="">
+    <form method="POST" action="{{route('admin.bookings.store')}}">
         @csrf
         <div class="form-floating">
-            <select name="room" class="form-select">
-                @foreach ($building->rooms as $room)
+            <select name="room_id" class="form-select">
+                @foreach ($building->rooms->sortBy('floor') as $room)
                     
                     <option value={{$room->id}}>{{$room->room_number}} (floor {{$room->floor}}) </option>
                 @endforeach
