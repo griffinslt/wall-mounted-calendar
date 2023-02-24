@@ -4,15 +4,15 @@
 
 @section('content')
     <div class="container-fluid px-5">
-        <h1>Edit Role: {{ $role->id }}</h1>
+        <h1>Name Role</h1>
 <p></p>
-        <form method="POST" action="{{route("permissions.update-role", ["role" => $role->id])}}">
+        <form method="POST" action="{{route('permissions.store-role')}}">
             @csrf
             <div class="row">
                 <div class='col'>
                     <h5>Role Name:</h5>
                 </div>
-                <div class="col"><input type="text" name="name" value="{{ $role->name }}"></div>
+                <div class="col"><input type="text" name="name" value=""></div>
                 <div class="col"></div>
                 <div class="col"></div>
 <p></p>

@@ -11,7 +11,7 @@
         <div class="col">
             <div class="row px-5">
                 <div class="col"><h1>Roles Table</h1></div>
-                <div class="d-flex justify-content-end col"><a href="">Create Role</a>
+                <div class="d-flex justify-content-end col"><a href="{{route("admin.create-role")}}">Create Role</a>
                 </div>
             </div>
 

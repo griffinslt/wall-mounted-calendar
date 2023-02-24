@@ -29,7 +29,7 @@ class RoleAndPermissionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.permissions.create-role');
     }
 
     /**
@@ -40,7 +40,25 @@ class RoleAndPermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required'
+        ]);
+
+        // foreach (Role::all() as $role) {
+        //     if ($role->name == ) {
+
+        //     }
+        // }
+
+        if (!Role::get()->pluck('name')->contains($validatedData['name'])) {
+            $role = new Role;
+            $role->name = $validatedData['name'];
+            $role->save();
+            return redirect()->route("permissions.index")->with('message', "Role Created");
+        }
+
+
+        return redirect()->route("permissions.index")->with('error', "A role by that name already exists");
     }
 
     /**
@@ -54,7 +72,7 @@ class RoleAndPermissionController extends Controller
         //
     }
 
-    
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -87,7 +105,7 @@ class RoleAndPermissionController extends Controller
         $role->name = $validatedData['name'];
         $role->save();
 
-        return redirect()->route("permissions.edit-role", ['role'=>$role])->with('message', "Role Updated");
+        return redirect()->route("permissions.edit-role", ['role' => $role])->with('message', "Role Updated");
     }
 
     public function updatePermission(Request $request, Permission $permission)
@@ -99,7 +117,7 @@ class RoleAndPermissionController extends Controller
         $permission->name = $validatedData['name'];
         $permission->save();
 
-        return redirect()->route("permissions.edit-permission", ['permission'=>$permission])->with('message', "Permission Updated");
+        return redirect()->route("permissions.edit-permission", ['permission' => $permission])->with('message', "Permission Updated");
     }
 
     /**
@@ -117,56 +135,53 @@ class RoleAndPermissionController extends Controller
     {
         $role->revokePermissionTo($permission->name);
         return redirect()
-                ->route('permissions.index')
-                ->with('message', 'Permission revoked from role.');
+            ->route('permissions.index')
+            ->with('message', 'Permission revoked from role.');
     }
 
     public function editRoleName(Role $role, $newName)
     {
         $role->name = $newName;
         return redirect()
-                ->route('permissions.index')
-                ->with('message', 'Role name updated.');
+            ->route('permissions.index')
+            ->with('message', 'Role name updated.');
     }
 
     public function editPermissionName(Permission $permission, $newName)
     {
         $permission->name = $newName;
         return redirect()
-                ->route('permissions.index')
-                ->with('message', 'Permission name updated.');
+            ->route('permissions.index')
+            ->with('message', 'Permission name updated.');
     }
 
     public function editRolePermissions(Permission $permission)
     {
         $roles = Role::all();
-        return view('admin.permissions.add-permission-to-role', ['permission'=>$permission, 'roles'=>$roles]);
+        return view('admin.permissions.add-permission-to-role', ['permission' => $permission, 'roles' => $roles]);
     }
     public function addPermissionToRole(Permission $permission, Role $role)
     {
         // dd($role, $permission);
         $role->givePermissionTo($permission->name);
         return redirect()
-                ->route('permissions.index')
-                ->with('message', 'Permission ('.$permission->name. ') added to role.');
+            ->route('permissions.index')
+            ->with('message', 'Permission (' . $permission->name . ') added to role.');
     }
 
     public function removePermission(Permission $permission)
     {
         $permission->delete();
         return redirect()
-                ->route('permissions.index')
-                ->with('message', 'Permission removed.');
+            ->route('permissions.index')
+            ->with('message', 'Permission removed.');
     }
 
     public function removeRole(Role $role)
     {
         $role->delete();
         return redirect()
-                ->route('permissions.index')
-                ->with('message', 'Role removed.');
+            ->route('permissions.index')
+            ->with('message', 'Role removed.');
     }
-
-
-    
 }

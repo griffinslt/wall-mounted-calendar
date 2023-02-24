@@ -72,10 +72,14 @@ Route::get('/admin/permissions', [RoleAndPermissionController::class, 'index'])-
 Route::get('/admin/permissions/remove-permission-from-role/{role}/{permission}', [RoleAndPermissionController::class, 'removePermissionFromRole'])->name('permissions.remove-permission-from-role');
 Route::get('/admin/permissions/role/{role}', [RoleAndPermissionController::class, 'editRole'])->name('permissions.edit-role');
 Route::post('/admin/permissions/role/{role}', [RoleAndPermissionController::class, 'updateRole'])->name('permissions.update-role');
+Route::post('/admin/permissions/', [RoleAndPermissionController::class, 'store'])->name('permissions.store-role');
+
+
 Route::get('/admin/permissions/permission/{permission}', [RoleAndPermissionController::class, 'editPermission'])->name('permissions.edit-permission');
 Route::post('/admin/permissions/permission/{permission}', [RoleAndPermissionController::class, 'updatePermission'])->name('permissions.update-permission');
 Route::get('/admin/permissions/edit-role-permissions/{permission}', [RoleAndPermissionController::class, 'editRolePermissions'])->name('permissions.edit-role-permissions');
 Route::get('/admin/permissions/add-permission-to-role/{permission}/{role}', [RoleAndPermissionController::class, 'addPermissionToRole'])->name('permissions.add-permission-to-role');
+Route::get('/admin/permissions/create', [RoleAndPermissionController::class, 'create'])->name('admin.create-role');
 
 Route::delete('/admin/permissions/remove-permission/{permission}', [RoleAndPermissionController::class, 'removePermission'])->name('permissions.remove-permission');
 Route::delete('/admin/permissions/delete-role/{role}', [RoleAndPermissionController::class, 'removeRole'])->name('permissions.remove-role');

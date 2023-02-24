@@ -14,7 +14,6 @@
 <title>@yield('title')</title>
 
 <body>
-    @livewire('livewire-ui-modal')
     @livewireScripts
     
 
