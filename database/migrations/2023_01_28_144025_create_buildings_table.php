@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name')->unique();
+            $table->integer('number_of_floors');
             $table->double('gps_latitude',22, 20);
             $table->double('gps_longitude', 22, 20);
             $table->string('campus')->nullable();//some unis will only have one campus

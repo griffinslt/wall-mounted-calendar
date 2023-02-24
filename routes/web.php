@@ -33,12 +33,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/tablet-view/{room}',[BookingController::class, 'create'])->name('booking.create');
+Route::get('/tablet-view/{room}',[BookingController::class, 'tabletView'])->name('tabletView');
 Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');
 
 Route::get('/admin/bookings', [BookingController::class, 'index'])->name('bookings.index');
 Route::get('/admin/rooms/{room}/bookings', [BookingController::class, 'indexForRoom'])->name('bookings.index-for-room');
 Route::get('/admin/users/{user}/bookings', [BookingController::class, 'indexForUser'])->name('bookings.index-for-user');
+Route::get('/admin/bookings/create/{building}', [BookingController::class, 'create'])->name('bookings.admin.create');
+Route::get('/admin/bookings/choose-building', [BookingController::class, 'chooseBuilding'])->name('bookings.admin.chooseBuilding');
 
 
 Route::get('/admin/bookings/{booking}', [BookingController::class, 'edit'])->name('bookings.edit');

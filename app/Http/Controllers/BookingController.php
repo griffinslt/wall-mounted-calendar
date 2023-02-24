@@ -19,7 +19,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::all();
+        $bookings = Booking::orderBy('id', 'DESC')->get();
         return view('admin.bookings.bookings', ['bookings' => $bookings]);
     }
 
@@ -39,13 +39,30 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Room $room)
+    public function tabletView(Room $room)
     {
         $bookings = Booking::all();
         $rooms = Room::all();
         $buildings = Building::all();
         return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
     }
+
+    public function chooseBuilding()
+    {
+        $buildings = Building::all();
+        return view('admin.bookings.choose-building', ['buildings'=>$buildings]);
+
+
+    }
+
+    public function create(Building $building)
+    {
+        return view('admin.bookings.create', ['building'=>$building]);
+    }
+
+
+
+
 
     /**
      * Store a newly created resource in storage.

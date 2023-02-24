@@ -6,7 +6,7 @@
 
 <div class="row px-5">
     <div class="col"><h1>Bookings Page</h1></div>
-    <div class="d-flex justify-content-end col"><a href="">Create Booking</a>
+    <div class="d-flex justify-content-end col"><a href="{{route('bookings.admin.chooseBuilding')}}">Create Booking</a>
     </div>
 </div>
     
