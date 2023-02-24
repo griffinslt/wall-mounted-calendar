@@ -71,8 +71,9 @@
         <div class="col">
             <div class="row px-5">
                 <div class="col"><h1>Permissions Table</h1></div>
-                <div class="d-flex justify-content-end col"><a href="">Create Permission</a>
-                </div>
+                {{-- <div class="d-flex justify-content-end col">
+                    <a href="">Create Permission</a>
+                </div> --}}
             </div>
 
 
@@ -90,22 +91,22 @@
                                 <th scope="row">{{ $permission->name }}</th>
                                 <td>
                                     <div class="row justify-content-center align-items-center g-2">
-                                        <div class="col"><a
+                                        {{-- <div class="col"><a
                                                 href="{{ route('permissions.edit-permission', ['permission' => $permission]) }}"
-                                                class="btn btn-success">Edit Permission</a></div>
+                                                class="btn btn-success">Edit Permission</a></div> --}}
                                         <div class="col"><a
                                                 href="{{ route('permissions.edit-role-permissions', ['permission' => $permission]) }}"
                                                 class="btn btn-primary">Add Permission To Role</a>
                                         </div>
-                                        <div class="col">
+                                        {{--<div class="col"> --}}
                                         {{-- <form action="{{route('permissions.remove-permission', ['permission'=>$permission])}}" method="post">
                                             @csrf
                                             @method('delete') --}}
-                                            <button data-bs-target="#deleteModal"
-                                            data-bs-toggle="modal" data-url="{{route('permissions.remove-permission', ['permission'=>$permission])}}" class="btn btn-danger delete-role">Remove Permission</button>
+                                            {{-- <button data-bs-target="#deleteModal" --}}
+                                            {{-- data-bs-toggle="modal" data-url="{{route('permissions.remove-permission', ['permission'=>$permission])}}" class="btn btn-danger delete-role">Remove Permission</button> --}}
                                         {{-- </form> --}}
                                         
-                                        </div>
+                                        {{-- </div>  --}}
                                     </div>
                                 </td>
 
