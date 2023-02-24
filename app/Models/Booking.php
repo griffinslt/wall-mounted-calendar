@@ -9,6 +9,10 @@ class Booking extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'time_of_booking' => 'datetime'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
