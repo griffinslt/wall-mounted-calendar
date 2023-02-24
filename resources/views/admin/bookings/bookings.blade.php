@@ -50,6 +50,8 @@
             </tbody>
         </table>
 
+        {{ $bookings->links() }}
+
 
 
     <div class="modal fade" id="deleteModal" tabindex="-1">
