@@ -19,7 +19,6 @@ class RoomController extends Controller
     {
         $rooms = Room::get();
         return view("admin.rooms.rooms", ['rooms' => $rooms]);
-
     }
 
     /**
@@ -51,18 +50,16 @@ class RoomController extends Controller
         $building = Building::find($validatedData['building']);
         if ($validatedData['floor'] < $building->number_of_floors) {
             $room = new Room;
-        $room->capacity = $validatedData['capacity'];
-        $room->room_number = $validatedData['room_number'];
-        $room->floor = $validatedData['floor'];
-        $room->building_id = $validatedData['building'];
-        $room->save();
+            $room->capacity = $validatedData['capacity'];
+            $room->room_number = $validatedData['room_number'];
+            $room->floor = $validatedData['floor'];
+            $room->building_id = $validatedData['building'];
+            $room->save();
 
-        return redirect()->route('rooms.edit', ['room' => $room->id])->with('message', "Room Created");
+            return redirect()->route('rooms.edit', ['room' => $room->id])->with('message', "Room Created");
         } else {
             return redirect()->route('rooms.index')->with('error', "Room Not Created");
         }
-        
-
     }
 
     /**
@@ -86,7 +83,7 @@ class RoomController extends Controller
     {
         $buildings = Building::all();
         $facilities = Facility::all();
-        return view('admin.rooms.edit', ['room'=>$room, 'buildings'=>$buildings, 'facilities' => $facilities]);
+        return view('admin.rooms.edit', ['room' => $room, 'buildings' => $buildings, 'facilities' => $facilities]);
     }
 
     public function addFacilityToRoom(Room $room, Facility $facility)
@@ -125,6 +122,8 @@ class RoomController extends Controller
             'building' => 'required',
         ]);
 
+        $building = Building::find($validatedData['building']);
+        if ($validatedData['floor'] < $building->number_of_floors) {
         $room->capacity = $validatedData['capacity'];
         $room->room_number = $validatedData['room_number'];
         $room->floor = $validatedData['floor'];
@@ -133,6 +132,9 @@ class RoomController extends Controller
 
 
         return redirect()->route('rooms.edit', ['room' => $room->id])->with('message', "Room Updated");
+        } else {
+            return redirect()->route('rooms.edit', ['room' => $room->id])->with('error', "Invalid Floor Number");
+        }
     }
 
     /**
@@ -146,7 +148,7 @@ class RoomController extends Controller
 
         $room->delete();
         return redirect()
-                ->route('rooms.index')
-                ->with('message', 'Room was Deleted.');
+            ->route('rooms.index')
+            ->with('message', 'Room was Deleted.');
     }
 }
