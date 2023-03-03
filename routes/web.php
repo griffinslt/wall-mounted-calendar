@@ -34,8 +34,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/tablet-view/{room}',[BookingController::class, 'tabletView'])->name('tabletView');
-Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');
+Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');//->middleware('throttle:only_15_visits')
 
+Route::get('/admin', [BookingController::class, 'admin']);
 Route::get('/admin/bookings', [BookingController::class, 'index'])->name('bookings.index');
 Route::get('/admin/rooms/{room}/bookings', [BookingController::class, 'indexForRoom'])->name('bookings.index-for-room');
 Route::get('/admin/users/{user}/bookings', [BookingController::class, 'indexForUser'])->name('bookings.index-for-user');
@@ -85,9 +86,7 @@ Route::delete('/admin/permissions/remove-permission/{permission}', [RoleAndPermi
 Route::delete('/admin/permissions/delete-role/{role}', [RoleAndPermissionController::class, 'removeRole'])->name('permissions.remove-role');
 
 
+Route::get('/bookings', [BookingController::class, 'indexUserLoggedIn'])->name('index-for-logged-in-user');
 
-Route::get('/admin', function () {
-    return view('admin.admin');
-});
 
 require __DIR__.'/auth.php';

@@ -29,7 +29,9 @@
     @livewireScripts
     
 
+    <div class = "p-5">
     @yield('content')
+    </div>
 
     
 </body>

@@ -9,9 +9,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 
 class BookingController extends Controller
 {
+
+    public function admin()
+    {
+        return redirect()->route('bookings.index');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +25,18 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::orderBy('id', 'DESC')->paginate(30);
-        return view('admin.bookings.bookings', ['bookings' => $bookings]);
+        $user = auth()->user();
+        if (auth()->check()) {
+            if ($user->can('view-all-bookings')) {
+                $bookings = Booking::orderBy('id', 'DESC')->paginate(30);
+                return view('admin.bookings.bookings', ['bookings' => $bookings]);
+            } else {
+                $bookings = Booking::where('user_id', "=", auth()->user()->id)->orderBy('id', 'DESC')->paginate(30);
+                return redirect()->route('index-for-logged-in-user');
+            }
+        } else {
+            return view('auth.register');
+        }
     }
 
     public function indexForRoom(Room $room)
@@ -30,8 +46,18 @@ class BookingController extends Controller
     }
     public function indexForUser(User $user)
     {
-        $bookings = $user->bookings;
+        $bookings = Booking::where("user_id", "=", $user->id)->paginate(30);
         return view('admin.bookings.bookings', ['bookings' => $bookings]);
+    }
+
+    public function indexUserLoggedIn()
+    {
+        if (auth()->check()) {
+            $user = auth()->user();
+            return view('bookings.index', ['user' => $user]);
+        } else {
+            return view('auth.login');
+        }
     }
 
     /**
@@ -41,6 +67,7 @@ class BookingController extends Controller
      */
     public function tabletView(Room $room)
     {
+        
         $bookings = Booking::all();
         $rooms = Room::all();
         $buildings = Building::all();
@@ -50,14 +77,12 @@ class BookingController extends Controller
     public function chooseBuilding()
     {
         $buildings = Building::all();
-        return view('admin.bookings.choose-building', ['buildings'=>$buildings]);
-
-
+        return view('admin.bookings.choose-building', ['buildings' => $buildings]);
     }
 
     public function create(Building $building)
     {
-        return view('admin.bookings.create', ['building'=>$building]);
+        return view('admin.bookings.create', ['building' => $building]);
     }
 
 
@@ -94,7 +119,7 @@ class BookingController extends Controller
             'Europe/London'
         );
         $time = $timeCarbon->format('Y-m-d H:i:s');
-        if(!$this->checkInUse($room, $timeCarbon) and $timeCarbon->gt(Carbon::now())){
+        if (!$this->checkInUse($room, $timeCarbon) and $timeCarbon->gt(Carbon::now())) {
             $booking = new Booking;
             $booking->duration = $validatedData['duration'];
             $booking->time_of_booking = $time;
@@ -103,8 +128,7 @@ class BookingController extends Controller
             $booking->save();
 
             return redirect()->route('bookings.index')->with('message', 'Booking was Created.');
-
-        } else{
+        } else {
             return redirect()->route('bookings.index')->with('error', 'Booking was Not Created.');
         }
     }
@@ -117,7 +141,6 @@ class BookingController extends Controller
      */
     public function show()
     {
-        
     }
 
     /**
@@ -161,17 +184,15 @@ class BookingController extends Controller
             'Europe/London'
         );
         $time = $timeCarbon->format('Y-m-d H:i:s');
-        if(!$this->checkInUse($booking->room, $timeCarbon) and $timeCarbon->gt(Carbon::now())){
+        if (!$this->checkInUse($booking->room, $timeCarbon) and $timeCarbon->gt(Carbon::now())) {
             $booking->duration = $validatedData['duration'];
             $booking->time_of_booking = $time;
             $booking->save();
 
             return redirect()->route('bookings.index')->with('message', 'Booking was Updated.');
-
-        } else{
+        } else {
             return redirect()->route('bookings.index')->with('error', 'Booking was Not Updated.');
         }
-
     }
 
     public function checkInUse($room, $time)
@@ -183,8 +204,8 @@ class BookingController extends Controller
             if (
                 Carbon::parse($booking->time_of_booking)->lte($time) and
                 Carbon::parse($booking->time_of_booking)
-                    ->addMinutes($booking->duration - 1)
-                    ->gte($time) and
+                ->addMinutes($booking->duration - 1)
+                ->gte($time) and
                 ($booking->room_id = $room->id)
             ) {
                 //$this->in_use = true;
@@ -217,6 +238,18 @@ class BookingController extends Controller
     public function reportIssue(Room $room, String $issue)
     {
 
+        $executed = RateLimiter::attempt(
+            '',
+            $perMinute = 5,
+            function() {
+            }
+        );
+         
+        if (! $executed) {
+            session()->flash('error', 'Too Many Issues Reported, Try Again In A Minute');
+          return redirect()->route('tabletView', ['room' => $room]);
+        }
+
         Mail::raw("Tablet from room " . $room->room_number . " on level " . $room->level . "in building " . $room->building->name . " on " .  $room->building->campus . " Campus is have an issue with " . $issue, function ($message) {
             $message->from('tablet-issue@university.com', 'Laravel');
 
@@ -224,6 +257,6 @@ class BookingController extends Controller
         });
         //return view('make_booking', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
         session()->flash('message', 'Issue Reported');
-        return redirect()->route('booking.create', ['room' => $room]);
+        return redirect()->route('tabletView', ['room' => $room]);
     }
 }

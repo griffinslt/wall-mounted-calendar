@@ -10,6 +10,17 @@
 
         </div>
     @endif
+    @if (\Session::has('error'))
+        <div class="alert alert-danger">
+            <ul>
+                {!! \Session::get('error') !!}
+            </ul>
+            @php
+                header('Refresh:2');
+            @endphp
+
+        </div>
+    @endif
     <div wire:poll.keep-alive.30000ms>
         @php
             $this->refreshBooking();
