@@ -76,13 +76,25 @@ class BookingController extends Controller
 
     public function chooseBuilding()
     {
+
         $buildings = Building::all();
         return view('admin.bookings.choose-building', ['buildings' => $buildings]);
+    }
+
+    public function chooseBuildingNormal()
+    {
+        $buildings = Building::all();
+        return view('bookings.choose-building', ['buildings' => $buildings]);
     }
 
     public function create(Building $building)
     {
         return view('admin.bookings.create', ['building' => $building]);
+    }
+
+    public function createNormal(Building $building)
+    {
+        return view('bookings.create', ['building' => $building]);
     }
 
 
@@ -123,7 +135,7 @@ class BookingController extends Controller
             $booking = new Booking;
             $booking->duration = $validatedData['duration'];
             $booking->time_of_booking = $time;
-            $booking->user_id = 1;
+            $booking->user_id = auth()->user()->id;
             $booking->room_id = $validatedData['room_id'];
             $booking->save();
 
@@ -239,9 +251,10 @@ class BookingController extends Controller
     {
 
         $executed = RateLimiter::attempt(
-            '',
+            $room->id,
             $perMinute = 5,
             function() {
+                
             }
         );
          

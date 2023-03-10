@@ -8,7 +8,7 @@
         <div class="col">
             <h1>Bookings Page</h1>
         </div>
-        <div class="d-flex justify-content-end col"><a href="{{----}}">Create Booking</a>
+        <div class="d-flex justify-content-end col"><a href="{{route('bookings.chooseBuilding')}}">Create Booking</a>
         </div>
 
 

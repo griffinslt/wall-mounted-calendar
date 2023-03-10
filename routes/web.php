@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CookieController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleAndPermissionController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
+use App\Models\Room;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::get('/cookie/set', [CookieController::class, 'setCookie']);
+Route::get('/cookie/get', [CookieController::class, 'getCookie']);
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -28,7 +33,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit'); 
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -36,7 +41,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/tablet-view/{room}',[BookingController::class, 'tabletView'])->name('tabletView');
 Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');//->middleware('throttle:only_15_visits')
 
-Route::get('/admin', [BookingController::class, 'admin']);
+Route::get('/admin', [BookingController::class, 'admin'])->name('name');
 Route::get('/admin/bookings', [BookingController::class, 'index'])->name('bookings.index');
 Route::get('/admin/rooms/{room}/bookings', [BookingController::class, 'indexForRoom'])->name('bookings.index-for-room');
 Route::get('/admin/users/{user}/bookings', [BookingController::class, 'indexForUser'])->name('bookings.index-for-user');
@@ -45,7 +50,7 @@ Route::get('/admin/bookings/choose-building', [BookingController::class, 'choose
 Route::post('/admin/bookings/', [BookingController::class, 'store'])->name('admin.bookings.store');
 
 
-Route::get('/admin/bookings/{booking}', [BookingController::class, 'edit'])->name('bookings.edit');
+Route::get('/bookings/{booking}', [BookingController::class, 'edit'])->name('bookings.edit');
 Route::post('/admin/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
 Route::delete('/admin/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 
@@ -87,6 +92,11 @@ Route::delete('/admin/permissions/delete-role/{role}', [RoleAndPermissionControl
 
 
 Route::get('/bookings', [BookingController::class, 'indexUserLoggedIn'])->name('index-for-logged-in-user');
+Route::get('/bookings/choose-building', [BookingController::class, 'chooseBuildingNormal'])->name('bookings.chooseBuilding');
+Route::get('/bookings/create/{building}', [BookingController::class, 'createNormal'])->name('bookings.create');
 
+Route::get('/tablet-setup', function(){
+    return "view('tablet-setup')";
+})->name('tablet-setup');
 
 require __DIR__.'/auth.php';

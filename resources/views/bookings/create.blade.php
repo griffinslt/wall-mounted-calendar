@@ -80,7 +80,7 @@
                 <div class="form-floating">
                     <select name="hour" class="form-select" id="floatingSelect"
                         aria-label="Floating label select example">
-                        @for ($i = 8; $i < 19; $i++)
+                        @for ($i = 8; $i < 21; $i++)
                             <option value="{{ $i }}">{{ $i }}</option>
                         @endfor
                     </select>

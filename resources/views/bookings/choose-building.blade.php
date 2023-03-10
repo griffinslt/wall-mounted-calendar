@@ -10,7 +10,7 @@
     <div class="container-fluid px-5">
     
         @foreach ($buildings->sortBy('campus')->sortBy('name') as $building)
-            <a class = 'btn btn-primary' href="{{route('bookings.admin.create', ['building'=> $building->id])}}"> {{$building->name}} ({{$building->campus}}) </a>
+            <a class = 'btn btn-primary' href="{{route('bookings.create', ['building'=> $building->id])}}"> {{$building->name}} ({{$building->campus}}) </a>
             <p></p>
         @endforeach
     

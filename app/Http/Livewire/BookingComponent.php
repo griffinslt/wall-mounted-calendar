@@ -20,6 +20,8 @@ class BookingComponent extends Component
 
     public $time; //would actually be the current time ($current = Carbon::now();)
 
+    public $nextBooking;
+
     //public $in_use;
 
     // public $checked_in;
@@ -107,12 +109,14 @@ class BookingComponent extends Component
     public function getNextBooking()
     {
         if (count($this->bookings) > 0) {
-            return $this->bookings
+            $this->nextBooking = 
+             $this->bookings
                 ->toQuery()
                 ->where('room_id', '=', $this->room->id)
                 ->where('time_of_booking', '>', $this->time->format('Y-m-d H:i:s'))
                 ->orderBy('time_of_booking', 'asc')
                 ->first();
+            return $this->nextBooking;
         } else {
             return null;
         }
@@ -131,6 +135,10 @@ class BookingComponent extends Component
 
     public function bookMeeting($duration)
     {
+        $this->refreshBooking();
+        $this->emit('refreshComponent');
+
+        
         $time_for_booking_original = $this->getTime()->second(0);
         $time_for_booking = $this->getTime()->second(0);
         $min = intval($time_for_booking->format('i'));
@@ -147,6 +155,11 @@ class BookingComponent extends Component
         }
 
         $duration = $duration + $time_for_booking_original->diffInMinutes($time_for_booking);
+        if ($this->nextBooking !=null) {
+            if ($this->nextBooking->time_of_booking->lte(Carbon::now()->addMinutes($duration))) {
+                return redirect()->route('tabletView', ['room'=> $this->room])->with('error', "Next Meeting too soon to book allowed");
+            } 
+        }
 
         $b = new Booking();
         $b->time_of_booking = $time_for_booking_original;
