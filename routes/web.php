@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+//admin pages
 Route::get('/admin', [BookingController::class, 'admin'])->name('name');
 Route::get('/admin/bookings', [BookingController::class, 'index'])->name('bookings.index');
 Route::get('/admin/rooms/{room}/bookings', [BookingController::class, 'indexForRoom'])->name('bookings.index-for-room');
@@ -93,10 +93,10 @@ Route::get('/bookings', [BookingController::class, 'indexUserLoggedIn'])->name('
 Route::get('/bookings/choose-building', [BookingController::class, 'chooseBuildingNormal'])->name('bookings.chooseBuilding');
 Route::get('/bookings/create/{building}', [BookingController::class, 'createNormal'])->name('bookings.create');
 
-Route::get('/tablet-view/{room}',[TabletController::class, 'show'])->name('tablet-view');
+Route::get('/tablet-view/{room}/',[TabletController::class, 'show'])->name('tablet-view');
 Route::get('submit_issue/{room}/{issue}', [TabletController::class,'report'])->name('booking.submit-issue');
 Route::get('/tablet-setup', [TabletController::class, 'setup'])->name('tablet-setup');
 Route::get('/tablet-setup/set-cookie', [TabletController::class, 'setCookie'])->name('set-cookie');
-Route::get('/cookie/get', [TabletController::class, 'getCookie']);
+Route::get('/cookie/get', [TabletController::class, 'getCookie'])->name('get-cookie');
 
 require __DIR__.'/auth.php';

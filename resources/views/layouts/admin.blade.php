@@ -64,6 +64,8 @@
           <a href="{{route('rooms.index')}}"><h5>Rooms</h5></a>
           <hr>
           <a href="{{route('permissions.index')}}"><h5>Permissions</h5></a>
+          <hr>
+          <a href="{{route('tablet-setup')}}"><h5>Setup As Tablet</h5></a>
 
         </div>
       </div>
