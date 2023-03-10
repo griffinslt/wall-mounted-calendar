@@ -8,8 +8,7 @@ use App\Models\Room;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\RateLimiter;
+
 
 class BookingController extends Controller
 {
@@ -65,14 +64,7 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function tabletView(Room $room)
-    {
-        
-        $bookings = Booking::all();
-        $rooms = Room::all();
-        $buildings = Building::all();
-        return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
-    }
+    
 
     public function chooseBuilding()
     {
@@ -247,29 +239,5 @@ class BookingController extends Controller
             ->with('message', 'Booking was Deleted.');
     }
 
-    public function reportIssue(Room $room, String $issue)
-    {
-
-        $executed = RateLimiter::attempt(
-            $room->id,
-            $perMinute = 5,
-            function() {
-                
-            }
-        );
-         
-        if (! $executed) {
-            session()->flash('error', 'Too Many Issues Reported, Try Again In A Minute');
-          return redirect()->route('tabletView', ['room' => $room]);
-        }
-
-        Mail::raw("Tablet from room " . $room->room_number . " on level " . $room->level . "in building " . $room->building->name . " on " .  $room->building->campus . " Campus is have an issue with " . $issue, function ($message) {
-            $message->from('tablet-issue@university.com', 'Laravel');
-
-            $message->to('support@univeristy.com');
-        });
-        //return view('make_booking', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
-        session()->flash('message', 'Issue Reported');
-        return redirect()->route('tabletView', ['room' => $room]);
-    }
+    
 }

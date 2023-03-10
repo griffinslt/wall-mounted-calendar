@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
-use App\Http\Controllers\CookieController;
+use App\Http\Controllers\TabletController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleAndPermissionController;
 use App\Http\Controllers\RoomController;
@@ -21,8 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/cookie/set', [CookieController::class, 'setCookie']);
-Route::get('/cookie/get', [CookieController::class, 'getCookie']);
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,8 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/tablet-view/{room}',[BookingController::class, 'tabletView'])->name('tabletView');
-Route::get('submit_issue/{room}/{issue}', [BookingController::class,'reportIssue'])->name('booking.submit-issue');//->middleware('throttle:only_15_visits')
+
 
 Route::get('/admin', [BookingController::class, 'admin'])->name('name');
 Route::get('/admin/bookings', [BookingController::class, 'index'])->name('bookings.index');
@@ -95,8 +93,10 @@ Route::get('/bookings', [BookingController::class, 'indexUserLoggedIn'])->name('
 Route::get('/bookings/choose-building', [BookingController::class, 'chooseBuildingNormal'])->name('bookings.chooseBuilding');
 Route::get('/bookings/create/{building}', [BookingController::class, 'createNormal'])->name('bookings.create');
 
-Route::get('/tablet-setup', function(){
-    return "view('tablet-setup')";
-})->name('tablet-setup');
+Route::get('/tablet-view/{room}',[TabletController::class, 'show'])->name('tablet-view');
+Route::get('submit_issue/{room}/{issue}', [TabletController::class,'report'])->name('booking.submit-issue');
+Route::get('/tablet-setup', [TabletController::class, 'setup'])->name('tablet-setup');
+Route::get('/tablet-setup/set-cookie', [TabletController::class, 'setCookie'])->name('set-cookie');
+Route::get('/cookie/get', [TabletController::class, 'getCookie']);
 
 require __DIR__.'/auth.php';

@@ -37,6 +37,8 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'edit-role']);
         Permission::create(['name' => 'delete-role']);
 
+        Permission::create(['name' => 'setup-tablet']);
+
        
 
         $adminRole = Role::create(['name' => 'Admin']);
@@ -61,6 +63,7 @@ class RoleAndPermissionSeeder extends Seeder
             'assign-role',
             'edit-role',
             'delete-role',
+            'setup-tablet',
         ]);
 
         $lecturerRole->givePermissionTo([
