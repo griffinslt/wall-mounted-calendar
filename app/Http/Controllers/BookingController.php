@@ -64,7 +64,14 @@ class BookingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
+
+    public function searchByFilter()
+    {
+        $rooms = Room::all();
+        $buildings = Building::all();
+        return view('admin.bookings.search-by-filter', ['rooms' => $rooms, 'buildings' => $buildings]);
+    }
 
     public function chooseBuilding()
     {
@@ -208,8 +215,8 @@ class BookingController extends Controller
             if (
                 Carbon::parse($booking->time_of_booking)->lte($time) and
                 Carbon::parse($booking->time_of_booking)
-                ->addMinutes($booking->duration - 1)
-                ->gte($time) and
+                    ->addMinutes($booking->duration - 1)
+                    ->gte($time) and
                 ($booking->room_id = $room->id)
             ) {
                 //$this->in_use = true;
@@ -239,5 +246,5 @@ class BookingController extends Controller
             ->with('message', 'Booking was Deleted.');
     }
 
-    
+
 }

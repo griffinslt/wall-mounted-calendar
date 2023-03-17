@@ -46,6 +46,7 @@ Route::get('/admin/users/{user}/bookings', [BookingController::class, 'indexForU
 Route::get('/admin/bookings/create/{building}', [BookingController::class, 'create'])->name('bookings.admin.create');
 Route::get('/admin/bookings/choose-building', [BookingController::class, 'chooseBuilding'])->name('bookings.admin.chooseBuilding');
 Route::post('/admin/bookings/', [BookingController::class, 'store'])->name('admin.bookings.store');
+Route::get('/admin/bookings/search-by-filter', [BookingController::class, 'searchByFilter'])->name('admin.search-by-filter');
 
 
 Route::get('/bookings/{booking}', [BookingController::class, 'edit'])->name('bookings.edit');

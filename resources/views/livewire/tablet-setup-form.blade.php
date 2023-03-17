@@ -16,7 +16,7 @@
                 @if (!$selectedBuilding || $selectedBuilding == 'Unselected')
                     <option selected>Please Select A Building</option>
                 @else
-                    @foreach (\App\Models\Building::find($this->selectedBuilding)->rooms->sortBy('room_number')->sortBy('floor') as $room)
+                    @foreach ($buildings->find($this->selectedBuilding)->rooms->sortBy('room_number')->sortBy('floor') as $room)
                         <option value={{ $room->id }}>{{ $room->room_number }} (floor {{ $room->floor }}) </option>
                     @endforeach
 
