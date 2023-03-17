@@ -14,13 +14,19 @@ class TabletController extends Controller
 {
     public function show(Room $room, Request $request)
     {
+        $bookings = Booking::all();
+        $rooms = Room::all();
+        $buildings = Building::all();
+
+        
         $value = $request->cookie(strval($room->id));
-        echo $value;
+        // echo $value;
         if ($value) {
-            $bookings = Booking::all();
-            $rooms = Room::all();
-            $buildings = Building::all();
             return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
+        } else if(auth()->check()){
+            if (auth()->user()->can('view-all-tablets')) {
+                return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
+            }
         }
         abort(403);
     }
@@ -31,7 +37,7 @@ class TabletController extends Controller
             'room' => 'required|integer',
             'building' => 'required|integer',
         ]);
-        
+
 
 
         auth()->logout();
@@ -40,10 +46,9 @@ class TabletController extends Controller
         // }
         $room = $validatedData['room'];
         $minutes = 5259492;
-        $value = mt_rand(111111111111111111,999999999999999999);
+        $value = mt_rand(111111111111111111, 999999999999999999);
         $response = new Response(redirect()->route('tablet-view', ['room' => intval($room)]));
         $response->withCookie(cookie($validatedData['room'], $value, $minutes, null, null, false, false));
-        // return redirect()->route('tablet-view', ['room' => $room]);
         return $response;
     }
 

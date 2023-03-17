@@ -12,7 +12,7 @@
         @csrf
         <div class="form-floating">
             <select name="room_id" class="form-select">
-                @foreach ($building->rooms->sortBy('floor') as $room)
+                @foreach ($building->rooms->sortBy('room_number')->sortBy('floor') as $room)
                     
                     <option value={{$room->id}}>{{$room->room_number}} (floor {{$room->floor}}) </option>
                 @endforeach

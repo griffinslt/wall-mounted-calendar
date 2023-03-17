@@ -18,8 +18,18 @@ class RoleAndPermissionController extends Controller
 
         $roles = Role::all();
         $permissions = Permission::all();
+        if (auth()->check()) {
+            if (auth()->user()->can('view-permissions-page')) {
+                return view("admin.permissions.permissions", ['roles' => $roles, 'permissions' => $permissions]);
+            } else{
+                abort(403);
+            }
+        } 
 
-        return view("admin.permissions.permissions", ['roles' => $roles, 'permissions' => $permissions]);
+        return view('auth.register');
+        
+
+        
     }
 
     /**
