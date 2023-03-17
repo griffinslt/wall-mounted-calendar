@@ -178,10 +178,26 @@
                         <div class="row py-3 m-1">
                             @if ($this->available_rooms_button_pressed)
 
-
-
-                                <div class="container-fluid p-3 border bg-light overflow-auto text-black rounded"
+                            
+                                <div class="col p-3 border bg-light overflow-auto text-black rounded"
                                     style="max-height: 120px; max-width:500px; min-height: 120px;">
+                                    <h5><strong>Rooms With Same Facilities</strong></h5>
+                                    <hr>
+                                    @if (count($this->findAvailableRoomWithFacilities()))
+                                        @foreach ($this->findAvailableRoomWithFacilities() as $room)
+                                            <h5>{{ $room->building->name }}, Floor {{ $room->floor }}, Room
+                                                {{ $room->room_number }}</h5>
+
+                                            <hr>
+                                        @endforeach
+                                    @else
+                                        <h5>No other rooms available at the moment</h5>
+                                    @endif
+                                </div>
+                                <div class="col p-3 border bg-light overflow-auto text-black rounded"
+                                    style="max-height: 120px; max-width:500px; min-height: 120px;">
+                                    <h5>All Avaiable Rooms</h5>
+                                    <hr>
                                     @if (count($this->findAvailableRoom()))
                                         @foreach ($this->findAvailableRoom() as $room)
                                             <h5>{{ $room->building->name }}, Floor {{ $room->floor }}, Room

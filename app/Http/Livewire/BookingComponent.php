@@ -167,8 +167,9 @@ class BookingComponent extends Component
         $b->room_id = $this->room->id;
         $b->user_id = null;
         $b->checked_in = false;
+        $b->checked_in = true;
         $b->save();
-        //$this->in_use = true;
+
         $this->refreshBooking();
         $this->emit('refreshComponent');
 
@@ -192,6 +193,47 @@ class BookingComponent extends Component
     }
 
     public function findAvailableRoom()
+    {
+        $this->refreshBooking();
+        $availableRooms = [];
+
+        foreach ($this->rooms as $room) {
+            if ($room->building_id == $this->room->building_id and $room->floor == $this->room->floor 
+            and $room->id != $this->room->id and !$this->checkInUse($room) ) {
+                array_push($availableRooms, $room);
+            }
+        }
+
+        if (sizeOf($availableRooms) < 10) {
+            foreach ($this->rooms as $room) {
+                if ($room->building_id == $this->room->building_id and $room->id != $this->room->id and !$this->checkInUse($room)) {
+                    array_push($availableRooms, $room);
+                }
+            }
+        }
+
+        $availableRooms = array_unique($availableRooms);
+        $closestBuildings = $this->getClosestBuildings();
+
+        if (sizeOf($availableRooms) < 10) {
+            foreach ($this->rooms as $room) {
+                if ($room->building_id == $closestBuildings[0] and !$this->checkInUse($room)) {
+                    array_push($availableRooms, $room);
+                }
+            }
+            foreach ($this->rooms as $room) {
+                if ($room->building_id == $closestBuildings[1] and !$this->checkInUse($room)) {
+                    array_push($availableRooms, $room);
+                }
+            }
+
+
+        }
+
+        //dd($availableRooms);
+        return $availableRooms;
+    }
+    public function findAvailableRoomWithFacilities()
     {
         $this->refreshBooking();
         $availableRooms = [];
