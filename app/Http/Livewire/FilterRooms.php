@@ -34,6 +34,8 @@ class FilterRooms extends Component
 
     public $wantedFacilities = array();
 
+    public $capacity;
+
     
 
     public function boot()
@@ -51,7 +53,7 @@ class FilterRooms extends Component
         }
 
         foreach ($this->buildings->find($this->selectedBuilding)->rooms as $room) {
-            if (!$this->checkInUse($room, $this->time)) {
+            if (!$this->checkInUse($room, $this->time) and $this->checkFacilities($room) and $this->checkCapacity($room)) {
                 $availableRooms->add($room);
             }
         }
@@ -66,7 +68,7 @@ class FilterRooms extends Component
             return $availableRooms;
         }
         foreach ($this->rooms as $room) {
-            if (!$this->checkInUse($room, $this->time) and $this->checkFacilities($room)) {
+            if (!$this->checkInUse($room, $this->time) and $this->checkFacilities($room) and $this->checkCapacity($room)) {
                 $availableRooms->add($room);
             }
         }
@@ -104,6 +106,10 @@ class FilterRooms extends Component
         return $inUse;
     }
 
+    public function checkCapacity($room)
+    {
+        return $room->capacity >= $this->capacity;
+    }
 
 
 

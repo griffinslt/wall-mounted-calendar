@@ -123,7 +123,20 @@
 
     <div class="row justify-content-center align-items-center g-2">
         <div class="col">
-            
+            <div class="form-floating">
+                <select class="form-select" wire:model="capacity" name="building" id="">
+                    <option value = 0 selected>Any</option>
+                    <option value=5>5+</option>
+                    <option value=10>10+</option>
+                    <option value=25>25+</option>
+                    <option value=50>50+</option>
+                    <option value=100>100+</option>
+                    <option value=250>250+</option>
+                    
+                </select>
+                <label form="floatingSelect">Minimum Capacity</label>
+            </div>
+
 
 
 
