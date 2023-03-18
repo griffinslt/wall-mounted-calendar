@@ -1,4 +1,29 @@
 <div>
+    @if (\Session::has('message'))
+        <div class="alert alert-success">
+            <ul>
+                {!! \Session::get('message') !!}
+            </ul>
+            @php
+                header('Refresh:2');
+            @endphp
+
+        </div>
+    @endif
+    @if (\Session::has('error'))
+        <div class="alert alert-danger">
+            <ul>
+                {!! \Session::get('error') !!}
+            </ul>
+            @php
+                header('Refresh:2');
+            @endphp
+
+        </div>
+    @endif
+
+
+
     <div class="form-floating">
         <select wire:model="duration" name="duration" class="form-select" id="floatingSelect"
             aria-label="Floating label select example">
@@ -94,6 +119,29 @@
         <label form="floatingSelect">Building</label>
     </div>
 
+    <hr>
+
+    <div class="row justify-content-center align-items-center g-2">
+        <div class="col">
+            
+
+
+
+        </div>
+        <div class="col">
+            @foreach ($facilities as $facility)
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value={{ $facility->id }} id="flexCheckDefault"
+                        wire:model="wantedFacilities" name="wantedFacilities[]">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        {{ $facility->name }}
+                    </label>
+                </div>
+            @endforeach
+
+        </div>
+    </div>
+
 
     <hr>
 
@@ -101,7 +149,7 @@
 
 
     <div class="form-floating">
-        <select wire:model = "room" class="form-select" name="room" id="">
+        <select wire:model="room" class="form-select" name="room" id="">
             <option selected>Unselected</option>
             @if (!($day && $month && $year && $hour && $minute && $duration))
                 <option selected>Please Select Another Time and duation</option>
@@ -109,11 +157,6 @@
                 @php
                     $this->setTime();
                 @endphp
-
-                {{-- @if (Carbon\Carbon::now()->gt($time))
-                    {{dd('error')}}
-                @endif --}}
-
                 @if ($selectedBuilding)
                     @php
                         //get rooms from building at that time that are not booked
@@ -134,10 +177,13 @@
 
         </select>
         <label form="floatingSelect">Room</label>
+
+
+
     </div>
 
     <p></p>
-    <button wire:click = "bookRoom"class="btn btn-primary btn">Book Room</button>
+    <button wire:click="bookRoom" class="btn btn-primary btn">Book Room</button>
 
 
 </div>

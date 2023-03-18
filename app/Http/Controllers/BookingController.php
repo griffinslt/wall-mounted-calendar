@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Building;
+use App\Models\Facility;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -70,7 +71,8 @@ class BookingController extends Controller
     {
         $rooms = Room::all();
         $buildings = Building::all();
-        return view('admin.bookings.search-by-filter', ['rooms' => $rooms, 'buildings' => $buildings]);
+        $facilities = Facility::all();
+        return view('admin.bookings.search-by-filter', ['rooms' => $rooms, 'buildings' => $buildings, 'facilities' => $facilities]);
     }
 
     public function chooseBuilding()

@@ -4,7 +4,7 @@
 
 @section('content')
 
-@livewire('filter-rooms', ['rooms' => $rooms, 'buildings' => $buildings])
+@livewire('filter-rooms', ['rooms' => $rooms, 'buildings' => $buildings, 'facilities' => $facilities])
 
 
 

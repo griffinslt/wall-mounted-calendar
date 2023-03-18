@@ -13,9 +13,14 @@
             <a class = 'btn btn-primary' href="{{route('bookings.admin.create', ['building'=> $building->id])}}"> {{$building->name}} ({{$building->campus}}) </a>
             <p></p>
         @endforeach
+
+        <h5>Not sure of the details yet?</h5>
+        <a class = "btn btn-info" href="{{route('admin.search-by-filter')}}">Search By Filter</a><p></p>
     
         <a class="btn btn-danger" href="/admin/bookings">Cancel</a>
     </div>
+
+    
 
 
 
