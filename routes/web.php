@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
+Route::get('/bookings/choose-building/', [BookingController::class, 'chooseBuildingNormal'])->name('bookings.chooseBuilding');
 
 Route::get('/', function () {
     return view('welcome');
@@ -46,7 +46,7 @@ Route::get('/admin/users/{user}/bookings', [BookingController::class, 'indexForU
 Route::get('/admin/bookings/create/{building}', [BookingController::class, 'create'])->name('bookings.admin.create');
 Route::get('/admin/bookings/choose-building', [BookingController::class, 'chooseBuilding'])->name('bookings.admin.chooseBuilding');
 Route::post('/admin/bookings/', [BookingController::class, 'store'])->name('admin.bookings.store');
-Route::get('/admin/bookings/search-by-filter', [BookingController::class, 'searchByFilter'])->name('admin.search-by-filter');
+Route::get('/bookings/search-by-filter', [BookingController::class, 'searchByFilter'])->name('admin.search-by-filter');
 
 
 Route::get('/bookings/{booking}', [BookingController::class, 'edit'])->name('bookings.edit');
@@ -91,7 +91,8 @@ Route::delete('/admin/permissions/delete-role/{role}', [RoleAndPermissionControl
 
 
 Route::get('/bookings', [BookingController::class, 'indexUserLoggedIn'])->name('index-for-logged-in-user');
-Route::get('/bookings/choose-building', [BookingController::class, 'chooseBuildingNormal'])->name('bookings.chooseBuilding');
+
+
 Route::get('/bookings/create/{building}', [BookingController::class, 'createNormal'])->name('bookings.create');
 
 Route::get('/tablet-view/{room}/',[TabletController::class, 'show'])->name('tablet-view');

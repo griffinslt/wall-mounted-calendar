@@ -41,13 +41,21 @@ class BookingController extends Controller
 
     public function indexForRoom(Room $room)
     {
+        if (auth()->check()) {
+            
+        
         $bookings = $room->bookings;
         return view('admin.bookings.bookings', ['bookings' => $bookings]);
+        }
+        return view('auth.register');
     }
     public function indexForUser(User $user)
     {
+        if (auth()->check()) {
         $bookings = Booking::where("user_id", "=", $user->id)->paginate(30);
         return view('admin.bookings.bookings', ['bookings' => $bookings]);
+        }
+        return view('auth.register');
     }
 
     public function indexUserLoggedIn()
@@ -56,7 +64,7 @@ class BookingController extends Controller
             $user = auth()->user();
             return view('bookings.index', ['user' => $user]);
         } else {
-            return view('auth.login');
+            return view('auth.register');
         }
     }
 
@@ -69,6 +77,9 @@ class BookingController extends Controller
 
     public function searchByFilter()
     {
+        if(!auth()->check()){
+            return view('auth.register');
+        }
         $rooms = Room::all();
         $buildings = Building::all();
         $facilities = Facility::all();
@@ -78,23 +89,35 @@ class BookingController extends Controller
     public function chooseBuilding()
     {
 
+        if(!auth()->check()){
+            return view('auth.register');
+        }
         $buildings = Building::all();
         return view('admin.bookings.choose-building', ['buildings' => $buildings]);
     }
 
     public function chooseBuildingNormal()
     {
+        if(!auth()->check()){
+            return view('auth.register');
+        }
         $buildings = Building::all();
         return view('bookings.choose-building', ['buildings' => $buildings]);
     }
 
     public function create(Building $building)
     {
+        if(!auth()->check()){
+            return view('auth.register');
+        }
         return view('admin.bookings.create', ['building' => $building]);
     }
 
     public function createNormal(Building $building)
     {
+        if(!auth()->check()){
+            return view('auth.register');
+        }
         return view('bookings.create', ['building' => $building]);
     }
 
@@ -110,6 +133,9 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+        if(!auth()->check()){
+            return view('auth.register');
+        }
         $validatedData = $request->validate([
             'room_id' => 'required',
             'duration' => 'required',
@@ -165,6 +191,9 @@ class BookingController extends Controller
     public function edit(Booking $booking)
     {
 
+        if(!auth()->check()){
+            return view('auth.register');
+        }
         $bookings = Booking::where("room_id", "=", $booking->room->id)->get();
         return view('admin.bookings.edit', ['booking' => $booking, 'bookings' => $bookings]);
     }
@@ -178,6 +207,9 @@ class BookingController extends Controller
      */
     public function update(Request $request, Booking $booking)
     {
+        if(!auth()->check()){
+            return view('auth.register');
+        }
         $validatedData = $request->validate([
             'duration' => 'required',
             'day' => 'required',
@@ -242,6 +274,9 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
+        if(!auth()->check()){
+            return view('auth.register');
+        }
         $booking->delete();
         return redirect()
             ->route('bookings.index')
