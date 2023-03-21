@@ -12,21 +12,23 @@ use Illuminate\Support\Facades\RateLimiter;
 
 class TabletController extends Controller
 {
-    public function show(Room $room, Request $request)
+    public function show(Request $request)
     {
         $bookings = Booking::all();
         $rooms = Room::all();
         $buildings = Building::all();
 
         
-        $value = $request->cookie(strval($room->id));
+        $room_id = $request->cookie("tablet_room");
         // echo $value;
-        if ($value) {
+
+        if ($room_id) {
+            $room = Room::find($room_id);
             return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
-        } else if(auth()->check()){
-            if (auth()->user()->can('view-all-tablets')) {
-                return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
-            }
+        // } else if(auth()->check()){
+        //     if (auth()->user()->can('view-all-tablets')) {
+        //         return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
+        //     }
         }
         abort(403);
     }
@@ -46,9 +48,9 @@ class TabletController extends Controller
         // }
         $room = $validatedData['room'];
         $minutes = 5259492;
-        $value = mt_rand(111111111111111111, 999999999999999999);
-        $response = new Response(redirect()->route('tablet-view', ['room' => intval($room)]));
-        $response->withCookie(cookie($validatedData['room'], $value, $minutes, null, null, false, false));
+        $value = $validatedData['room'];
+        $response = new Response(redirect()->route('tablet-view'));
+        $response->withCookie(cookie("tablet_room", $value, $minutes, null, null, false, false));
         return $response;
     }
 
@@ -74,11 +76,15 @@ class TabletController extends Controller
 
     }
 
-    public function report(Room $room, string $issue)
+    public function report(Request $request, string $issue)
     {
+        $room_id = $request->cookie("tablet_room");
+        if ($room_id) {
+            $room = Room::find($room_id);
+        
 
         $executed = RateLimiter::attempt(
-            $room->id,
+            $room_id,
             $perMinute = 5,
             function () {
 
@@ -87,7 +93,7 @@ class TabletController extends Controller
 
         if (!$executed) {
             session()->flash('error', 'Too Many Issues Reported, Try Again In A Minute');
-            return redirect()->route('tabletView', ['room' => $room]);
+            return redirect()->route('tablet-view');
         }
 
         Mail::raw("Tablet from room " . $room->room_number . " on level " . $room->level . "in building " . $room->building->name . " on " . $room->building->campus . " Campus is have an issue with " . $issue, function ($message) {
@@ -97,7 +103,9 @@ class TabletController extends Controller
         });
         //return view('make_booking', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
         session()->flash('message', 'Issue Reported');
-        return redirect()->route('tablet-view', ['room' => $room]);
+        return redirect()->route('tablet-view');
     }
+    abort(403);
+}
 
 }
