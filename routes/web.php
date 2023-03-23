@@ -99,6 +99,5 @@ Route::get('/tablet-view/',[TabletController::class, 'show'])->name('tablet-view
 Route::get('submit_issue/{room}/{issue}', [TabletController::class,'report'])->name('booking.submit-issue');
 Route::get('/tablet-setup', [TabletController::class, 'setup'])->name('tablet-setup');
 Route::get('/tablet-setup/set-cookie', [TabletController::class, 'setCookie'])->name('set-cookie');
-Route::get('/cookie/get', [TabletController::class, 'getCookie'])->name('get-cookie');
 
 require __DIR__.'/auth.php';

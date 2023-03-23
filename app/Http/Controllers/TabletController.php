@@ -46,13 +46,6 @@ class TabletController extends Controller
         return $response;
     }
 
-    public function getCookie(Request $request)
-    {
-        $value = $request->cookie('24');
-        dd($value);
-
-    }
-
     public function setup()
     {
         if (auth()->check()) {
