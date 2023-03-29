@@ -1,5 +1,5 @@
 <div>
-    <form action="{{route('set-cookie')}}">
+    <form action="{{route('set-cookie')}}" method="POST">
         @csrf
         <div class="form-floating">
             <select class="form-select" wire:model="selectedBuilding" name="building" id="">

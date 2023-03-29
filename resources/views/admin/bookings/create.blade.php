@@ -8,7 +8,7 @@
     <h1 class="mx-5">Make a booking in {{$building->name}} ({{$building->campus}})</h1>
 
     <div class="container-fluid px-5">
-    <form method="POST" action="{{route('admin.bookings.store')}}">
+    <form method="POST" action="{{route('bookings.store')}}">
         @csrf
         <div class="form-floating">
             <select name="room_id" class="form-select">

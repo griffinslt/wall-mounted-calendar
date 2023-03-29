@@ -45,7 +45,7 @@ Route::get('/admin/rooms/{room}/bookings', [BookingController::class, 'indexForR
 Route::get('/admin/users/{user}/bookings', [BookingController::class, 'indexForUser'])->name('bookings.index-for-user');
 Route::get('/admin/bookings/create/{building}', [BookingController::class, 'create'])->name('bookings.admin.create');
 Route::get('/admin/bookings/choose-building', [BookingController::class, 'chooseBuilding'])->name('bookings.admin.chooseBuilding');
-Route::post('/admin/bookings/', [BookingController::class, 'store'])->name('admin.bookings.store');
+Route::post('/admin/bookings/', [BookingController::class, 'store'])->name('bookings.store');
 Route::get('/bookings/search-by-filter', [BookingController::class, 'searchByFilter'])->name('admin.search-by-filter');
 
 
@@ -98,6 +98,6 @@ Route::get('/bookings/create/{building}', [BookingController::class, 'createNorm
 Route::get('/tablet-view',[TabletController::class, 'show'])->name('tablet-view');
 Route::get('submit_issue/{room}/{issue}', [TabletController::class,'report'])->name('booking.submit-issue');
 Route::get('/tablet-setup', [TabletController::class, 'setup'])->name('tablet-setup');
-Route::get('/tablet-setup/set-cookie', [TabletController::class, 'setCookie'])->name('set-cookie');
+Route::post('/tablet-setup/set-cookie', [TabletController::class, 'setCookie'])->name('set-cookie');
 
 require __DIR__.'/auth.php';

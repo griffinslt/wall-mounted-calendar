@@ -22,7 +22,7 @@ class TabletController extends Controller
         $room_id = $request->cookie("tablet_room");
 
         if ($room_id) {
-            $room = Room::find($room_id);
+            $room = Room::findOrFail($room_id);
             return view('tablet-view', ['bookings' => $bookings, 'rooms' => $rooms, 'room' => $room, 'buildings' => $buildings]);
         }
         abort(403);
