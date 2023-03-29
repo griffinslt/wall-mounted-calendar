@@ -34,9 +34,6 @@ class TabletController extends Controller
             'room' => 'required|integer',
             'building' => 'required|integer',
         ]);
-
-
-
         auth()->logout();
         
         $minutes = 5259492;
@@ -56,9 +53,6 @@ class TabletController extends Controller
             }
         }
         abort(403);
-
-
-
     }
 
     public function report(Request $request, string $issue)
@@ -81,7 +75,9 @@ class TabletController extends Controller
                 return redirect()->route('tablet-view');
             }
 
-            Mail::raw("Tablet from room " . $room->room_number . " on level " . $room->level . "in building " . $room->building->name . " on " . $room->building->campus . " Campus is have an issue with " . $issue, function ($message) {
+            Mail::raw("Tablet from room " . $room->room_number . " on level " .
+            $room->level . "in building " . $room->building->name . " on " . $room->building->campus .
+            " Campus is have an issue with " . $issue, function ($message) {
                 $message->from('tablet-issue@university.com', 'Laravel');
 
                 $message->to('support@univeristy.com');

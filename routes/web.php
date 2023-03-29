@@ -95,7 +95,7 @@ Route::get('/bookings', [BookingController::class, 'indexUserLoggedIn'])->name('
 
 Route::get('/bookings/create/{building}', [BookingController::class, 'createNormal'])->name('bookings.create');
 
-Route::get('/tablet-view/',[TabletController::class, 'show'])->name('tablet-view');
+Route::get('/tablet-view',[TabletController::class, 'show'])->name('tablet-view');
 Route::get('submit_issue/{room}/{issue}', [TabletController::class,'report'])->name('booking.submit-issue');
 Route::get('/tablet-setup', [TabletController::class, 'setup'])->name('tablet-setup');
 Route::get('/tablet-setup/set-cookie', [TabletController::class, 'setCookie'])->name('set-cookie');

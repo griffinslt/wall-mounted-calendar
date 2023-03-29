@@ -18,8 +18,6 @@
 
         @livewire('tablet-setup-form', ['rooms' => $rooms, 'buildings' => $buildings])
 
-        <a href="{{route('get-cookie')}}">check</a>
-
     </div>
 
 @endsection

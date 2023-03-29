@@ -9,6 +9,7 @@
     <div class="d-flex justify-content-end col"><a href="{{route('bookings.admin.chooseBuilding')}}">Create Booking</a>
     </div>
 </div>
+ 
     
 
 

@@ -1,6 +1,9 @@
-<x-app-layout>
+<div class = "px-3 py-2">
     <a href="/admin/bookings"class="badge rounded-pill bg-primary">Home</a>
     <a href="/dashboard" class="badge rounded-pill bg-primary">Account</a>
+</div>
+<x-app-layout>
+    
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }}
