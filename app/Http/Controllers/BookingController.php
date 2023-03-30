@@ -18,11 +18,7 @@ class BookingController extends Controller
     {
         return redirect()->route('bookings.index');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $user = auth()->user();
@@ -67,13 +63,6 @@ class BookingController extends Controller
             return view('auth.register');
         }
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
 
     public function searchByFilter()
     {
@@ -123,14 +112,6 @@ class BookingController extends Controller
 
 
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if(!auth()->check()){
@@ -172,21 +153,11 @@ class BookingController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit(Booking $booking)
     {
@@ -198,13 +169,7 @@ class BookingController extends Controller
         return view('admin.bookings.edit', ['booking' => $booking, 'bookings' => $bookings]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, Booking $booking)
     {
         if(!auth()->check()){
@@ -253,25 +218,17 @@ class BookingController extends Controller
                     ->gte($time) and
                 ($booking->room_id = $room->id)
             ) {
-                //$this->in_use = true;
+
                 $inUse = true;
-                //break;
             } else {
-                //$this->in_use = false;
+
                 $inUse = false;
             }
         }
-
-        //return $this->in_use;
         return $inUse;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Booking $booking)
     {
         if(!auth()->check()){

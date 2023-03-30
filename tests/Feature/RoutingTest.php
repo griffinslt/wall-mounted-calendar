@@ -12,12 +12,6 @@ class RoutingTest extends TestCase
     use RefreshDatabase;
     protected bool $seed = true;
 
-
-
-    // protected function setUp(): void{
-    //     parent::setUp();
-    //     $this->seed();
-    // }
     public function test_admin()
 
     {
@@ -63,19 +57,53 @@ class RoutingTest extends TestCase
     public function test_book_room_valid()
     {
         $user = User::find(1);
-        $response = $this->actingAs($user)->post('bookings.store', [
+        $response = $this->actingAs($user)->post('/admin/bookings/', [
             "room_id" =>1,
             "duration" => 30,
             "year" => 2024,
-            "month" => 1,
+            "month" => 12,
             "day" => 1,
             "hour" => 12,
             "minute" => 0,
         ]);
-        dd($response->getStatusCode());
-        // $response->assertContent(201);
-
+        $response->assertSessionHas("message",'Booking was Created.');
     }
+
+    //tests an entry into the data base where there already is one
+    public function test_book_room_invalid()
+    {
+        $user = User::find(1);
+        $response = $this->actingAs($user)->post('/admin/bookings/', [
+            "room_id" =>201,
+            "duration" => 30,
+            "year" => 2023,
+            "month" => 2,
+            "day" => 1,
+            "hour" => 10,
+            "minute" => 30,
+        ]);
+        $response->assertSessionHas("error",'Booking was Not Created.');
+    }
+
+    public function test_delete_booking()
+    {
+        $user = User::find(1);
+        $response = $this->actingAs($user)->delete('/bookings/' . 1);
+        $response->assertSessionHas('message', 'Booking was Deleted.');
+    }
+
+
+    
+
+
+
+
+
+    
+
+
+
+
 
     
 }

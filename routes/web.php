@@ -51,7 +51,7 @@ Route::get('/bookings/search-by-filter', [BookingController::class, 'searchByFil
 
 Route::get('/bookings/{booking}', [BookingController::class, 'edit'])->name('bookings.edit');
 Route::post('/admin/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
-Route::delete('/admin/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
 
 Route::get('/admin/users', [UserController::class, 'index'])->name('users.index');
 Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
