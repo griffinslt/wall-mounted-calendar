@@ -28,7 +28,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'delete-room']);
         
         Permission::create(['name' => 'create-user']);
-        Permission::create(['name' => 'view-user']);
+        Permission::create(['name' => 'view-all-users']);
         Permission::create(['name' => 'edit-user']);
         Permission::create(['name' => 'delete-user']);
 
@@ -59,7 +59,7 @@ class RoleAndPermissionSeeder extends Seeder
             'view-all-rooms',
             'delete-room',
             'create-user',
-            'view-user',
+            'view-all-users',
             'edit-user',
             'delete-user',
             'create-role',
@@ -75,7 +75,7 @@ class RoleAndPermissionSeeder extends Seeder
             'create-booking',
             'view-booking',
             'view-all-rooms',
-            'view-user',
+            'view-all-users',
             'edit-booking',
             'delete-booking',
         
@@ -90,7 +90,7 @@ class RoleAndPermissionSeeder extends Seeder
             'update-room',
             'view-all-rooms',
             'delete-room',
-            'view-user',
+            'view-all-users',
         ]);
 
         $studentRole->givePermissionTo([
