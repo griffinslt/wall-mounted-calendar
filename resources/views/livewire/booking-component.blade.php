@@ -196,7 +196,7 @@
                                 </div>
                                 <div class="col p-3 border bg-light overflow-auto text-black rounded"
                                     style="max-height: 120px; max-width:500px; min-height: 120px;">
-                                    <h5>All Avaiable Rooms</h5>
+                                    <h5><strong>All Avaiable Rooms</strong></h5>
                                     <hr>
                                     @if (count($this->findAvailableRoom()))
                                         @foreach ($this->findAvailableRoom() as $room)

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Booking;
+use App\Models\Building;
 use Carbon\Carbon;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
@@ -33,7 +34,7 @@ class BookingComponent extends Component
     public function boot()
     {
         //$this->in_use = false;
-        
+
         $this->time = $this->time = Carbon::now();
         $this->available_rooms_button_pressed = false;
     }
@@ -42,14 +43,13 @@ class BookingComponent extends Component
     {
 
         dd($issue);
-        Mail::raw("Tablet from room " .$this->room->room_number. " on level " . $this->room->level. "in building " . $this->room->building->name . " on " .  $this->room->building->campus . " Campus is have an issue with " . $issue, function (Message $message) {
-                $message->to("supporst@university.com");
-            });
+        Mail::raw("Tablet from room " . $this->room->room_number . " on level " . $this->room->level . "in building " . $this->room->building->name . " on " . $this->room->building->campus . " Campus is have an issue with " . $issue, function (Message $message) {
+            $message->to("supporst@university.com");
+        });
 
-        Mail::raw("Tablet from room " .$this->room->room_number. " on level " . $this->room->level. "in building " . $this->room->building->name . " on " .  $this->room->building->campus . " Campus is have an issue with " . $issue, function($message)
-        {
+        Mail::raw("Tablet from room " . $this->room->room_number . " on level " . $this->room->level . "in building " . $this->room->building->name . " on " . $this->room->building->campus . " Campus is have an issue with " . $issue, function ($message) {
             $message->from('tabletIssue@university.com', 'Laravel');
-            
+
             $message->to('support@univeristy.com');
         });
     }
@@ -102,20 +102,20 @@ class BookingComponent extends Component
         $this->current_booking->save();
         $this->refreshBooking();
         $this->emit('refreshComponent');
-        
+
         //$this->checked_in = true; //when meeting ends this should then be set to false
     }
 
     public function getNextBooking()
     {
         if (count($this->bookings) > 0) {
-            $this->nextBooking = 
-             $this->bookings
-                ->toQuery()
-                ->where('room_id', '=', $this->room->id)
-                ->where('time_of_booking', '>', $this->time->format('Y-m-d H:i:s'))
-                ->orderBy('time_of_booking', 'asc')
-                ->first();
+            $this->nextBooking =
+                $this->bookings
+                    ->toQuery()
+                    ->where('room_id', '=', $this->room->id)
+                    ->where('time_of_booking', '>', $this->time->format('Y-m-d H:i:s'))
+                    ->orderBy('time_of_booking', 'asc')
+                    ->first();
             return $this->nextBooking;
         } else {
             return null;
@@ -138,7 +138,7 @@ class BookingComponent extends Component
         $this->refreshBooking();
         $this->emit('refreshComponent');
 
-        
+
         $time_for_booking_original = $this->getTime()->second(0);
         $time_for_booking = $this->getTime()->second(0);
         $min = intval($time_for_booking->format('i'));
@@ -155,10 +155,10 @@ class BookingComponent extends Component
         }
 
         $duration = $duration + $time_for_booking_original->diffInMinutes($time_for_booking);
-        if ($this->nextBooking !=null) {
+        if ($this->nextBooking != null) {
             if ($this->nextBooking->time_of_booking->lte(Carbon::now()->addMinutes($duration))) {
-                return redirect()->route('tabletView', ['room'=> $this->room])->with('error', "Next Meeting too soon to book allowed");
-            } 
+                return redirect()->route('tabletView', ['room' => $this->room])->with('error', "Next Meeting too soon to book allowed");
+            }
         }
 
         $b = new Booking();
@@ -192,14 +192,17 @@ class BookingComponent extends Component
         $this->bookings = Booking::get();
     }
 
+
     public function findAvailableRoom()
     {
         $this->refreshBooking();
         $availableRooms = [];
 
         foreach ($this->room->building->rooms as $room) {
-            if ($room->floor == $this->room->floor 
-            and $room->id != $this->room->id and !$this->checkInUse($room) ) {
+            if (
+                $room->floor == $this->room->floor
+                and $room->id != $this->room->id and !$this->checkInUse($room)
+            ) {
                 array_push($availableRooms, $room);
             }
         }
@@ -227,62 +230,87 @@ class BookingComponent extends Component
                 }
             }
 
+            $availableRooms = array_unique($availableRooms);
+
 
         }
-
-        //dd($availableRooms);
         return collect($availableRooms)->sortBy('room_number')->sortBy('floor')->sortBy('building_id');
     }
+
+    /**
+     * Function that finds other available rooms with at least the same capacity and facilities.
+     */
     public function findAvailableRoomWithFacilities()
     {
-        $this->refreshBooking();
+        $this->refreshBooking(); //this method just gets an updated collection of bookings from the database.
         $availableRooms = [];
 
-        foreach ($this->rooms as $room) {
-            if ($room->building_id == $this->room->building_id and $room->floor == $this->room->floor 
-            and $room->id != $this->room->id and !$this->checkInUse($room) 
-            and $room->capacity >= $this->room->capacity and $this->checkFacilities($this->room, $room)) {
+        //Checks current floor for availability
+        foreach ($this->room->building->rooms as $room) {
+            if (
+                $room->floor == $this->room->floor
+                and $room->id != $this->room->id and !$this->checkInUse($room)
+                and $room->capacity >= $this->room->capacity and $this->checkFacilities($this->room, $room)
+            ) {
                 array_push($availableRooms, $room);
             }
         }
 
+        //Checks the rest of the building for availability
         if (sizeOf($availableRooms) < 10) {
-            foreach ($this->rooms as $room) {
-                if ($room->building_id == $this->room->building_id and $room->id != $this->room->id and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity and $this->checkFacilities($this->room, $room)) {
+            foreach ($this->room->building->rooms as $room) {
+                if (
+                    $room->id != $this->room->id
+                    and !$this->checkInUse($room)
+                    and $room->capacity >= $this->room->capacity
+                    and $this->checkFacilities($this->room, $room)
+                ) {
                     array_push($availableRooms, $room);
                 }
             }
         }
 
         $availableRooms = array_unique($availableRooms);
+
+        //finds the 2 closest buildings
         $closestBuildings = $this->getClosestBuildings();
 
+
+        //checks the 2 closest buildings for rooms
         if (sizeOf($availableRooms) < 10) {
-            foreach ($this->rooms as $room) {
-                if ($room->building_id == $closestBuildings[0] and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity and $this->checkFacilities($this->room, $room)) {
+            $building1 = Building::findOrFail($closestBuildings[0]);
+            foreach ($building1->rooms as $room) {
+                if (
+                    !$this->checkInUse($room)
+                    and $room->capacity >= $this->room->capacity
+                    and $this->checkFacilities($this->room, $room)
+                ) {
                     array_push($availableRooms, $room);
                 }
             }
-            foreach ($this->rooms as $room) {
-                if ($room->building_id == $closestBuildings[1] and !$this->checkInUse($room) and $room->capacity >= $this->room->capacity and $this->checkFacilities($this->room, $room)) {
+            $building2 = Building::findOrFail($closestBuildings[1]);
+            foreach ($building2->rooms as $room) {
+                if (
+                    !$this->checkInUse($room)
+                    and $room->capacity >= $this->room->capacity
+                    and $this->checkFacilities($this->room, $room)
+                ) {
                     array_push($availableRooms, $room);
                 }
             }
-
-
         }
 
-        //dd($availableRooms);
-        return $availableRooms;
+        $availableRooms = array_unique($availableRooms);
+        return collect($availableRooms)->sortBy('room_number')->sortBy('floor')->sortBy('building_id');
     }
 
     public function checkFacilities($thisRoom, $room)
     {
         $thisRoomFacilities = array();
         $roomFacilities = array();
-        if (count($thisRoom->facilities) == count($room->facilities) and count($this->room->facilities->diff($room->facilities)) ==0) {
+        if (count($thisRoom->facilities) == count($room->facilities) and count($this->room->facilities->diff($room->facilities)) == 0) {
             return true;
-        } else{
+        } else {
             foreach ($thisRoom->facilities as $facility) {
                 array_push($thisRoomFacilities, $facility->name);
             }
@@ -290,30 +318,45 @@ class BookingComponent extends Component
             foreach ($room->facilities as $facility) {
                 array_push($roomFacilities, $facility->name);
             }
-            
+
             foreach ($thisRoomFacilities as $facility) {
-                if(!in_array($facility, $roomFacilities)){
+                if (!in_array($facility, $roomFacilities)) {
                     return false;
                 }
             }
 
             return true;
         }
-        
+
     }
 
     public function distanceBetweenBuildings($b1, $b2)
     {
-        $a = max($b1->gps_latitude, $b2->gps_longitude) - min($b1->gps_latitude, $b2->gps_longitude);
-        $b = max($b1->gps_longitude, $b2->gps_longitude) - max($b1->gps_longitude, $b2->gps_longitude);
-        $c = sqrt(pow($a, 2) + pow($b, 2));
-        return $c;
+        //convert GPS points to Radians
+        $b1Long = deg2rad($b1->gps_longitude);
+        $b1Lat = deg2rad($b1->gps_latitude);
+        $b2Long = deg2rad($b2->gps_longitude);
+        $b2Lat = deg2rad($b2->gps_latitude);
+
+        $longitudeDiff = $b2Long - $b1Long;
+        $latitudeDiff = $b2Lat - $b1Lat;
+
+        $a = pow(sin($latitudeDiff / 2), 2) + cos($b1Lat) * cos($b2Lat) * pow(sin($longitudeDiff / 2), 2);
+
+        $radiusOfEarth = 6378160; //m
+
+        // $a = max($b1->gps_latitude, $b2->gps_longitude) - min($b1->gps_latitude, $b2->gps_longitude);
+        // $b = max($b1->gps_longitude, $b2->gps_longitude) - max($b1->gps_longitude, $b2->gps_longitude);
+        // $c = sqrt(pow($a, 2) + pow($b, 2));
+        return 2 * asin(sqrt($a)) * $radiusOfEarth;
     }
     private function getClosestBuildings()
     {
         $buildings = [];
         $current_building = $this->room->building;
+        //loop through all buildings
         foreach ($this->buildings as $building) {
+            //adds to the array the distance the return from $this->distanceBetweenBuildings($current_building, $building) with the building id as the key
             if ($building != $current_building and $building->campus == $current_building->campus) {
                 $buildings = $buildings + [floatval($building->id) => $this->distanceBetweenBuildings($current_building, $building)];
             }
@@ -332,7 +375,7 @@ class BookingComponent extends Component
         return $this->available_rooms_button_pressed;
     }
 
-    
+
 
     public function render()
     {
