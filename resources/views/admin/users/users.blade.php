@@ -46,6 +46,9 @@
             </tbody>
         </table>
 
+        {{$users->links()}}
+
+
 
 
 

@@ -14,7 +14,7 @@
 <title>@yield('title')</title>
 
 <body>
-    
+
     @livewire('livewire-ui-modal')
     @livewireScripts
 
@@ -40,6 +40,10 @@
 
         </div>
     @endif
+    <div class = "p-1">
+        <a href="/admin/bookings"class="badge rounded-pill bg-primary">Home</a>
+        <a href="/dashboard" class="badge rounded-pill bg-primary">Account</a>
+    </div>
     <div class="p-5">
         @yield('content')
     </div>

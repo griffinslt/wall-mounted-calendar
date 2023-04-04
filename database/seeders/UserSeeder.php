@@ -48,6 +48,10 @@ class UserSeeder extends Seeder
         User::factory()
             ->hasBookings(2)
             ->count(100)->create();
+
+        foreach (User::all() as $user) {
+            $user->assignRole('default');
+        }
     
     }
 }

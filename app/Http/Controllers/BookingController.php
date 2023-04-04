@@ -31,7 +31,7 @@ class BookingController extends Controller
                 return redirect()->route('index-for-logged-in-user');
             }
         } else {
-            return view('auth.register');
+            return view('auth.login');
         }
     }
 
@@ -43,7 +43,7 @@ class BookingController extends Controller
         $bookings = $room->bookings;
         return view('admin.bookings.bookings', ['bookings' => $bookings]);
         }
-        return view('auth.register');
+        return view('auth.login');
     }
     public function indexForUser(User $user)
     {
@@ -51,7 +51,7 @@ class BookingController extends Controller
         $bookings = Booking::where("user_id", "=", $user->id)->paginate(30);
         return view('admin.bookings.bookings', ['bookings' => $bookings]);
         }
-        return view('auth.register');
+        return view('auth.login');
     }
 
     public function indexUserLoggedIn()
@@ -60,14 +60,14 @@ class BookingController extends Controller
             $user = auth()->user();
             return view('bookings.index', ['user' => $user]);
         } else {
-            return view('auth.register');
+            return view('auth.login');
         }
     }
 
     public function searchByFilter()
     {
         if(!auth()->check()){
-            return view('auth.register');
+            return view('auth.login');
         }
         $rooms = Room::all();
         $buildings = Building::all();

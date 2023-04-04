@@ -24,7 +24,7 @@ class RoleAndPermissionSeeder extends Seeder
 
         Permission::create(['name' => 'create-room']);
         Permission::create(['name' => 'update-room']);
-        Permission::create(['name' => 'view-room']);
+        Permission::create(['name' => 'view-all-rooms']);
         Permission::create(['name' => 'delete-room']);
         
         Permission::create(['name' => 'create-user']);
@@ -47,6 +47,7 @@ class RoleAndPermissionSeeder extends Seeder
         $lecturerRole = Role::create(['name' => 'Lecturer']);
         $staffRole = Role::create(['name' => 'Support Staff']);
         $studentRole = Role::create(['name' => 'Student']);
+        $defaultRole = Role::create(['name' => 'Default']);
 
         $adminRole->givePermissionTo([
             'create-booking',
@@ -55,7 +56,7 @@ class RoleAndPermissionSeeder extends Seeder
             'delete-booking',
             'create-room',
             'update-room',
-            'view-room',
+            'view-all-rooms',
             'delete-room',
             'create-user',
             'view-user',
@@ -73,8 +74,10 @@ class RoleAndPermissionSeeder extends Seeder
         $lecturerRole->givePermissionTo([
             'create-booking',
             'view-booking',
-            'view-room',
+            'view-all-rooms',
             'view-user',
+            'edit-booking',
+            'delete-booking',
         
         ]);
 
@@ -85,7 +88,7 @@ class RoleAndPermissionSeeder extends Seeder
             'delete-booking',
             'create-room',
             'update-room',
-            'view-room',
+            'view-all-rooms',
             'delete-room',
             'view-user',
         ]);
@@ -93,7 +96,14 @@ class RoleAndPermissionSeeder extends Seeder
         $studentRole->givePermissionTo([
             'create-booking',
             'view-booking',
-            'view-room',
+
+        ]);
+
+        $defaultRole->givePermissionTo([
+            'create-booking',
+            'view-booking',
+            'edit-booking',
+            'delete-booking',
         ]);
     
     

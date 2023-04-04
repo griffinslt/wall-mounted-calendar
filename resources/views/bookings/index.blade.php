@@ -21,6 +21,7 @@
                     <th scope="col">Room ID</th>
                     <th scope="col">Booking Time</th>
                     <th scope="col">Booking Duration/minutes</th>
+                    <th scope="col">Floor</th>
                     <th scope="col">Room Number</th>
                     <th scope="col">Building</th>
                     <th scope="col">Campus</th>
@@ -34,6 +35,7 @@
                         <td>{{ $booking->room->id }}</td>
                         <td>{{ $booking->time_of_booking }}</td>
                         <td>{{ $booking->duration }}</td>
+                        <td>{{ $booking->room->floor}}</td>
                         <td>{{ $booking->room->room_number }}</td>
                         <td>{{ $booking->room->building->name }}</td>
                         <td>{{ $booking->room->building->campus }}</td>

@@ -10,15 +10,19 @@ use Illuminate\Support\Facades\DB;
 
 class RoomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $rooms = Room::get();
-        return view("admin.rooms.rooms", ['rooms' => $rooms]);
+        if (!auth()->check()) {
+            return view('auth.login');
+        }
+        if (auth()->user()->can('view-all-rooms')) {
+            $rooms = Room::paginate(30);
+            return view("admin.rooms.rooms", ['rooms' => $rooms]);
+        }
+        else {
+            abort(403);
+        }
     }
 
     /**
@@ -124,14 +128,14 @@ class RoomController extends Controller
 
         $building = Building::find($validatedData['building']);
         if ($validatedData['floor'] < $building->number_of_floors) {
-        $room->capacity = $validatedData['capacity'];
-        $room->room_number = $validatedData['room_number'];
-        $room->floor = $validatedData['floor'];
-        $room->building_id = $validatedData['building'];
-        $room->save();
+            $room->capacity = $validatedData['capacity'];
+            $room->room_number = $validatedData['room_number'];
+            $room->floor = $validatedData['floor'];
+            $room->building_id = $validatedData['building'];
+            $room->save();
 
 
-        return redirect()->route('rooms.edit', ['room' => $room->id])->with('message', "Room Updated");
+            return redirect()->route('rooms.edit', ['room' => $room->id])->with('message', "Room Updated");
         } else {
             return redirect()->route('rooms.edit', ['room' => $room->id])->with('error', "Invalid Floor Number");
         }
