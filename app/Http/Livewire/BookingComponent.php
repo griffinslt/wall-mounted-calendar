@@ -197,16 +197,16 @@ class BookingComponent extends Component
         $this->refreshBooking();
         $availableRooms = [];
 
-        foreach ($this->rooms as $room) {
-            if ($room->building_id == $this->room->building_id and $room->floor == $this->room->floor 
+        foreach ($this->room->building->rooms as $room) {
+            if ($room->floor == $this->room->floor 
             and $room->id != $this->room->id and !$this->checkInUse($room) ) {
                 array_push($availableRooms, $room);
             }
         }
 
         if (sizeOf($availableRooms) < 10) {
-            foreach ($this->rooms as $room) {
-                if ($room->building_id == $this->room->building_id and $room->id != $this->room->id and !$this->checkInUse($room)) {
+            foreach ($this->room->building->rooms as $room) {
+                if ($room->id != $this->room->id and !$this->checkInUse($room)) {
                     array_push($availableRooms, $room);
                 }
             }
@@ -231,7 +231,7 @@ class BookingComponent extends Component
         }
 
         //dd($availableRooms);
-        return $availableRooms;
+        return collect($availableRooms)->sortBy('room_number')->sortBy('floor')->sortBy('building_id');
     }
     public function findAvailableRoomWithFacilities()
     {
