@@ -301,7 +301,7 @@ class BookingComponent extends Component
         }
 
         $availableRooms = array_unique($availableRooms);
-        return collect($availableRooms)->sortBy('room_number')->sortBy('floor')->sortBy('building_id');
+        return $availableRooms;
     }
 
     public function checkFacilities($thisRoom, $room)
@@ -343,7 +343,7 @@ class BookingComponent extends Component
 
         $a = pow(sin($latitudeDiff / 2), 2) + cos($b1Lat) * cos($b2Lat) * pow(sin($longitudeDiff / 2), 2);
 
-        $radiusOfEarth = 6378160; //m
+        $radiusOfEarth = 6378160; //in m
 
         // $a = max($b1->gps_latitude, $b2->gps_longitude) - min($b1->gps_latitude, $b2->gps_longitude);
         // $b = max($b1->gps_longitude, $b2->gps_longitude) - max($b1->gps_longitude, $b2->gps_longitude);
