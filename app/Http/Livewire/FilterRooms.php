@@ -94,7 +94,7 @@ class FilterRooms extends Component
         foreach ($room->bookings as $booking) {
             $inUse = false;
             if (
-                $booking->time_of_booking->lte($time) and
+                $booking->time_of_booking->gte($time) and
                 $booking->time_of_booking->addMinutes($booking->duration - 1)->gte($time) and
                 ($booking->room_id = $room->id)
             ) {

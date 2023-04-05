@@ -19,8 +19,8 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'create-booking']);
         Permission::create(['name' => 'view-booking']);
         Permission::create(['name' => 'view-all-bookings']);
-        Permission::create(['name' => 'edit-booking']);
-        Permission::create(['name' => 'delete-booking']);
+        Permission::create(['name' => 'edit-all-bookings']);
+        Permission::create(['name' => 'delete-all-bookings']);
 
         Permission::create(['name' => 'create-room']);
         Permission::create(['name' => 'update-room']);
@@ -52,8 +52,8 @@ class RoleAndPermissionSeeder extends Seeder
         $adminRole->givePermissionTo([
             'create-booking',
             'view-all-bookings',
-            'edit-booking',
-            'delete-booking',
+            'edit-all-bookings',
+            'delete-all-bookings',
             'create-room',
             'update-room',
             'view-all-rooms',
@@ -76,16 +76,16 @@ class RoleAndPermissionSeeder extends Seeder
             'view-booking',
             'view-all-rooms',
             'view-all-users',
-            'edit-booking',
-            'delete-booking',
+            'edit-all-bookings',
+            'delete-all-bookings',
         
         ]);
 
         $staffRole->givePermissionTo([
             'create-booking',
             'view-booking',
-            'edit-booking',
-            'delete-booking',
+            'edit-all-bookings',
+            'delete-all-bookings',
             'create-room',
             'update-room',
             'view-all-rooms',
@@ -102,8 +102,6 @@ class RoleAndPermissionSeeder extends Seeder
         $defaultRole->givePermissionTo([
             'create-booking',
             'view-booking',
-            'edit-booking',
-            'delete-booking',
         ]);
     
     

@@ -171,9 +171,6 @@
                     $this->setTime();
                 @endphp
                 @if ($selectedBuilding)
-                    @php
-                        //get rooms from building at that time that are not booked
-                    @endphp
                     @foreach ($this->getAvailableRoomsWithBuilding() as $room)
                         <option value={{ $room->id }}>{{ $room->room_number }} (floor {{ $room->floor }})
                         </option>

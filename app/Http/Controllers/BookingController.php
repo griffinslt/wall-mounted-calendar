@@ -38,18 +38,16 @@ class BookingController extends Controller
     public function indexForRoom(Room $room)
     {
         if (auth()->check()) {
-            
-        
-        $bookings = $room->bookings;
-        return view('admin.bookings.bookings', ['bookings' => $bookings]);
+            $bookings = $room->bookings->toQuery()->paginate(30);
+            return view('admin.bookings.bookings', ['bookings' => $bookings]);
         }
         return view('auth.login');
     }
     public function indexForUser(User $user)
     {
         if (auth()->check()) {
-        $bookings = Booking::where("user_id", "=", $user->id)->paginate(30);
-        return view('admin.bookings.bookings', ['bookings' => $bookings]);
+            $bookings = Booking::where("user_id", "=", $user->id)->paginate(30);
+            return view('admin.bookings.bookings', ['bookings' => $bookings]);
         }
         return view('auth.login');
     }
@@ -66,7 +64,7 @@ class BookingController extends Controller
 
     public function searchByFilter()
     {
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return view('auth.login');
         }
         $rooms = Room::all();
@@ -78,7 +76,7 @@ class BookingController extends Controller
     public function chooseBuilding()
     {
 
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return view('auth.register');
         }
         $buildings = Building::all();
@@ -87,7 +85,7 @@ class BookingController extends Controller
 
     public function chooseBuildingNormal()
     {
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return view('auth.register');
         }
         $buildings = Building::all();
@@ -96,7 +94,7 @@ class BookingController extends Controller
 
     public function create(Building $building)
     {
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return view('auth.register');
         }
         return view('admin.bookings.create', ['building' => $building]);
@@ -104,7 +102,7 @@ class BookingController extends Controller
 
     public function createNormal(Building $building)
     {
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return view('auth.register');
         }
         return view('bookings.create', ['building' => $building]);
@@ -114,7 +112,7 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return view('auth.register');
         }
         $validatedData = $request->validate([
@@ -161,18 +159,21 @@ class BookingController extends Controller
      */
     public function edit(Booking $booking)
     {
-
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return view('auth.register');
         }
+
         $bookings = Booking::where("room_id", "=", $booking->room->id)->get();
-        return view('admin.bookings.edit', ['booking' => $booking, 'bookings' => $bookings]);
+        if ($booking->user == auth()->user() or auth()->user()->can('edit-all-bookings')) {
+            return view('admin.bookings.edit', ['booking' => $booking, 'bookings' => $bookings]);
+        }
+        abort(403);
     }
 
 
     public function update(Request $request, Booking $booking)
     {
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return view('auth.register');
         }
         $validatedData = $request->validate([
@@ -231,13 +232,17 @@ class BookingController extends Controller
 
     public function destroy(Booking $booking)
     {
-        if(!auth()->check()){
-            return view('auth.register');
+        if (!auth()->check()) {
+            return view('auth.login');
         }
+        if ($booking->user == auth()->user() or auth()->user()->can('delete-all-bookings')) {
         $booking->delete();
         return redirect()
             ->route('bookings.index')
             ->with('message', 'Booking was Deleted.');
+        }
+
+        abort(403);
     }
 
 
