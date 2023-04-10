@@ -276,7 +276,7 @@ class BookingComponent extends Component
         $closestBuildings = $this->getClosestBuildings();
 
 
-        //checks the 2 closest buildings for rooms
+        //checks the 3 closest buildings for rooms
         if (sizeOf($availableRooms) < 10) {
             $building1 = Building::findOrFail($closestBuildings[0]);
             foreach ($building1->rooms as $room) {
@@ -298,6 +298,18 @@ class BookingComponent extends Component
                     array_push($availableRooms, $room);
                 }
             }
+            $building3 = Building::findOrFail($closestBuildings[2]);
+            foreach ($building3->rooms as $room) {
+                if (
+                    !$this->checkInUse($room)
+                    and $room->capacity >= $this->room->capacity
+                    and $this->checkFacilities($this->room, $room)
+                ) {
+                    array_push($availableRooms, $room);
+                }
+            }
+
+
         }
 
         $availableRooms = array_unique($availableRooms);
@@ -365,8 +377,9 @@ class BookingComponent extends Component
         sort($buildings, SORT_NUMERIC);
         $closest = array_shift($buildings);
         $second_closest = array_shift($buildings);
-        $twoClosest = [array_search($closest, $originalBuildings), array_search($second_closest, $originalBuildings)];
-        return $twoClosest;
+        $third_closest = array_shift($buildings);
+        $threeClosest = [array_search($closest, $originalBuildings), array_search($second_closest, $originalBuildings),array_search($third_closest, $originalBuildings) ];
+        return $threeClosest;
     }
 
     public function pressAvailableRoomsButton()
