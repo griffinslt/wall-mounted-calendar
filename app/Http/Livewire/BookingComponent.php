@@ -244,7 +244,6 @@ class BookingComponent extends Component
     {
         $this->refreshBooking(); //this method just gets an updated collection of bookings from the database.
         $availableRooms = [];
-
         //Checks current floor for availability
         foreach ($this->room->building->rooms as $room) {
             if (
@@ -255,7 +254,6 @@ class BookingComponent extends Component
                 array_push($availableRooms, $room);
             }
         }
-
         //Checks the rest of the building for availability
         if (sizeOf($availableRooms) < 10) {
             foreach ($this->room->building->rooms as $room) {
@@ -269,50 +267,39 @@ class BookingComponent extends Component
                 }
             }
         }
-
         $availableRooms = array_unique($availableRooms);
-
         //finds the 2 closest buildings
         $closestBuildings = $this->getClosestBuildings();
-
-
         //checks the 3 closest buildings for rooms
         if (sizeOf($availableRooms) < 10) {
+
             $building1 = Building::findOrFail($closestBuildings[0]);
-            foreach ($building1->rooms as $room) {
-                if (
-                    !$this->checkInUse($room)
-                    and $room->capacity >= $this->room->capacity
-                    and $this->checkFacilities($this->room, $room)
-                ) {
-                    array_push($availableRooms, $room);
-                }
-            }
+            $availableRooms = $this->addRoomsFromBuilding($building1, $availableRooms);
+        }
+        if (sizeOf($availableRooms) < 10) {
             $building2 = Building::findOrFail($closestBuildings[1]);
-            foreach ($building2->rooms as $room) {
-                if (
-                    !$this->checkInUse($room)
-                    and $room->capacity >= $this->room->capacity
-                    and $this->checkFacilities($this->room, $room)
-                ) {
-                    array_push($availableRooms, $room);
-                }
-            }
+            $availableRooms = $this->addRoomsFromBuilding($building2, $availableRooms);
+        }
+        if (sizeOf($availableRooms) < 10) {
             $building3 = Building::findOrFail($closestBuildings[2]);
-            foreach ($building3->rooms as $room) {
-                if (
-                    !$this->checkInUse($room)
-                    and $room->capacity >= $this->room->capacity
-                    and $this->checkFacilities($this->room, $room)
-                ) {
-                    array_push($availableRooms, $room);
-                }
+            $availableRooms = $this->addRoomsFromBuilding($building3, $availableRooms);
+        }
+        $availableRooms = array_unique($availableRooms);
+        return $availableRooms;
+    }
+
+    private function addRoomsFromBuilding($building, $availableRooms)
+    {
+        foreach ($building->rooms as $room) {
+            if (
+                !$this->checkInUse($room)
+                and $room->capacity >= $this->room->capacity
+                and $this->checkFacilities($this->room, $room)
+            ) {
+                array_push($availableRooms, $room);
             }
-
-
         }
 
-        $availableRooms = array_unique($availableRooms);
         return $availableRooms;
     }
 
@@ -367,9 +354,9 @@ class BookingComponent extends Component
         $buildings = [];
         $current_building = $this->room->building;
         //loop through all buildings
-        foreach ($this->buildings as $building) {
+        foreach ($this->buildings->where("campus", "=", $current_building->campus) as $building) {
             //adds to the array the distance the return from $this->distanceBetweenBuildings($current_building, $building) with the building id as the key
-            if ($building != $current_building and $building->campus == $current_building->campus) {
+            if ($building != $current_building) {
                 $buildings = $buildings + [floatval($building->id) => $this->distanceBetweenBuildings($current_building, $building)];
             }
         }
@@ -378,7 +365,7 @@ class BookingComponent extends Component
         $closest = array_shift($buildings);
         $second_closest = array_shift($buildings);
         $third_closest = array_shift($buildings);
-        $threeClosest = [array_search($closest, $originalBuildings), array_search($second_closest, $originalBuildings),array_search($third_closest, $originalBuildings) ];
+        $threeClosest = [array_search($closest, $originalBuildings), array_search($second_closest, $originalBuildings), array_search($third_closest, $originalBuildings)];
         return $threeClosest;
     }
 
