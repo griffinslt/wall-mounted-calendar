@@ -92,6 +92,13 @@ class RoutingTest extends TestCase
         $response->assertSessionHas('message', 'Booking was Deleted.');
     }
 
+    public function test_delete_booking_without_access()
+    {
+        $user = User::find(2);
+        $response = $this->actingAs($user)->delete('/bookings/' . 1);
+        $response->assertStatus(403);
+    }
+
 
     
 
