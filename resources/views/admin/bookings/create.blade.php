@@ -4,6 +4,9 @@
 
 @section('content')
 
+@php
+    $time = Carbon\Carbon::now("BST");
+@endphp
 
     <h1 class="mx-5">Make a booking in {{$building->name}} ({{$building->campus}})</h1>
 
@@ -68,10 +71,10 @@
                 <div class="form-floating">
                     <select name="year" class="form-select" id="floatingSelect"
                         aria-label="Floating label select example">
-                        <option value="{{ Carbon\Carbon::now()->format('Y') }}"> {{ Carbon\Carbon::now()->format('Y') }}
+                        <option value="{{ $time->format('Y') }}"> {{ $time->format('Y') }}
                         </option>
-                        <option value="{{ Carbon\Carbon::now()->addYears(1)->format('Y') }}">
-                            {{ Carbon\Carbon::now()->addYears(1)->format('Y') }}</option>
+                        <option value="{{ $time->addYears(1)->format('Y') }}">
+                            {{ $time->addYears(1)->format('Y') }}</option>
                     </select>
                     <label form="floatingSelect">Year</label>
                 </div>

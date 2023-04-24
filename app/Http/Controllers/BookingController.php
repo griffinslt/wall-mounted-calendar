@@ -27,11 +27,11 @@ class BookingController extends Controller
                 $bookings = Booking::orderBy('id', 'DESC')->paginate(30);
                 return view('admin.bookings.bookings', ['bookings' => $bookings]);
             } else {
-                $bookings = Booking::where('user_id', "=", auth()->user()->id)->orderBy('id', 'DESC')->paginate(30);
+                //$bookings = Booking::where('user_id', "=", auth()->user()->id)->orderBy('id', 'DESC')->paginate(30);
                 return redirect()->route('index-for-logged-in-user');
             }
         } else {
-            return view('auth.login');
+            return redirect()->route('login');
         }
     }
 
@@ -137,7 +137,7 @@ class BookingController extends Controller
             'Europe/London'
         );
         $time = $timeCarbon->format('Y-m-d H:i:s');
-        if (!$this->checkInUse($room, $timeCarbon) and $timeCarbon->gt(Carbon::now())) {
+        if (!$this->checkInUse($room, $timeCarbon) and $timeCarbon->gt(Carbon::now("BST"))) {
             $booking = new Booking;
             $booking->duration = $validatedData['duration'];
             $booking->time_of_booking = $time;
@@ -195,14 +195,14 @@ class BookingController extends Controller
             'Europe/London'
         );
         $time = $timeCarbon->format('Y-m-d H:i:s');
-        if (!$this->checkInUse($booking->room, $timeCarbon) and $timeCarbon->gt(Carbon::now())) {
+        if (!$this->checkInUse($booking->room, $timeCarbon) and $timeCarbon->gt(Carbon::now("BST"))) {
             $booking->duration = $validatedData['duration'];
             $booking->time_of_booking = $time;
             $booking->save();
 
             return redirect()->route('bookings.index')->with('message', 'Booking was Updated.');
         } else {
-            return redirect()->route('bookings.index')->with('error', 'Booking was Not Updated.');
+            return redirect()->route('bookings.index')->with('error', 'Booking was Not Updated.'.Carbon::now("BST"));
         }
     }
 

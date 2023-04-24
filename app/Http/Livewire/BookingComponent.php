@@ -17,9 +17,8 @@ class BookingComponent extends Component
     public $rooms;
 
     public $room;
-    public $room_id = 1; //would actually be the room the tablet is connected to
 
-    public $time; //would actually be the current time ($current = Carbon::now();)
+    public $time; 
 
     public $nextBooking;
 
@@ -35,24 +34,24 @@ class BookingComponent extends Component
     {
         //$this->in_use = false;
 
-        $this->time = $this->time = Carbon::now();
+        // $this->time = Carbon::now('BST');
         $this->available_rooms_button_pressed = false;
     }
 
-    public function reportIssue($issue)
-    {
+    // public function reportIssue($issue)
+    // {
 
-        dd($issue);
-        Mail::raw("Tablet from room " . $this->room->room_number . " on level " . $this->room->level . "in building " . $this->room->building->name . " on " . $this->room->building->campus . " Campus is have an issue with " . $issue, function (Message $message) {
-            $message->to("supporst@university.com");
-        });
+    //     dd($issue);
+    //     Mail::raw("Tablet from room " . $this->room->room_number . " on level " . $this->room->floor . "in building " . $this->room->building->name . " on " . $this->room->building->campus . " Campus is have an issue with " . $issue, function (Message $message) {
+    //         $message->to("supporst@university.com");
+    //     });
 
-        Mail::raw("Tablet from room " . $this->room->room_number . " on level " . $this->room->level . "in building " . $this->room->building->name . " on " . $this->room->building->campus . " Campus is have an issue with " . $issue, function ($message) {
-            $message->from('tabletIssue@university.com', 'Laravel');
+    //     // Mail::raw("Tablet from room " . $this->room->room_number . " on level " . $this->room->floor . "in building " . $this->room->building->name . " on " . $this->room->building->campus . " Campus is have an issue with " . $issue, function ($message) {
+    //     //     $message->from('tabletIssue@university.com', 'Laravel');
 
-            $message->to('support@univeristy.com');
-        });
-    }
+    //     //     $message->to('support@univeristy.com');
+    //     // });
+    // }
 
     public function checkInUse($room)
     {
@@ -87,7 +86,7 @@ class BookingComponent extends Component
 
     public function getTime()
     {
-        $this->time = Carbon::now();
+        $this->time = Carbon::now("BST");
         return $this->time;
     }
 
@@ -156,7 +155,7 @@ class BookingComponent extends Component
 
         $duration = $duration + $time_for_booking_original->diffInMinutes($time_for_booking);
         if ($this->nextBooking != null) {
-            if ($this->nextBooking->time_of_booking->lte(Carbon::now()->addMinutes($duration))) {
+            if ($this->nextBooking->time_of_booking->lte($this->getTime()->addMinutes($duration))) {
                 return redirect()->route('tabletView', ['room' => $this->room])->with('error', "Next Meeting too soon to book allowed");
             }
         }

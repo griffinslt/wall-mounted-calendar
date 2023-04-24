@@ -55,7 +55,7 @@ class TabletController extends Controller
         abort(403);
     }
 
-    public function report(Request $request, string $issue)
+    public function report(Request $request, Room $room, string $issue)
     {
         $room_id = $request->cookie("tablet_room");
         if ($room_id) {
@@ -76,8 +76,8 @@ class TabletController extends Controller
             }
 
             Mail::raw("Tablet from room " . $room->room_number . " on level " .
-            $room->level . "in building " . $room->building->name . " on " . $room->building->campus .
-            " Campus is have an issue with " . $issue, function ($message) {
+            $room->floor . " in building " . $room->building->name . " on " . $room->building->campus .
+            " Campus is have an issue with " . $issue . "\n(room ID " . $room_id . ")", function ($message) {
                 $message->from('tablet-issue@university.com', 'Laravel');
 
                 $message->to('support@univeristy.com');

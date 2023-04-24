@@ -4,7 +4,9 @@
 
 @section('content')
 
-
+@php
+    $time = Carbon\Carbon::now("BST");
+@endphp
     <h1 class="mx-5">Edit Booking: {{ $booking->id }} for room {{ $booking->room->id }}</h1>
 
     <div class="container-fluid px-5">
@@ -56,10 +58,10 @@
                     <div class="form-floating">
                         <select name="year" class="form-select" id="floatingSelect"
                             aria-label="Floating label select example">
-                            <option value="{{ Carbon\Carbon::now()->format('Y') }}"> {{ Carbon\Carbon::now()->format('Y') }}
+                            <option value="{{ $time->format('Y') }}"> {{ $time->format('Y') }}
                             </option>
-                            <option value="{{ Carbon\Carbon::now()->addYears(1)->format('Y') }}">
-                                {{ Carbon\Carbon::now()->addYears(1)->format('Y') }}</option>
+                            <option value="{{ $time->addYears(1)->format('Y') }}">
+                                {{ $time->format('Y') }}</option>
                         </select>
                         <label form="floatingSelect">Year</label>
                     </div>
@@ -109,7 +111,7 @@
             </thead>
             <tbody>
                 @foreach ($bookings as $booking)
-                    @if (Carbon\Carbon::parse($booking->time_of_booking)->gt(Carbon\Carbon::now()))
+                    @if (Carbon\Carbon::parse($booking->time_of_booking)->gt($time))
                         <tr>
                             <th scope="row">{{ $booking->id }}</th>
                             <td>{{ $booking->time_of_booking }}</td>

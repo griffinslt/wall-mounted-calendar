@@ -40,7 +40,13 @@ class FilterRooms extends Component
 
     public function boot()
     {
-        $this->currentTime = Carbon::now();
+        $this->currentTime = Carbon::now("BST");
+    }
+
+    public function getTime()
+    {
+        $this->currentTime = Carbon::now("BST");
+        return $this->currentTime;
     }
 
 

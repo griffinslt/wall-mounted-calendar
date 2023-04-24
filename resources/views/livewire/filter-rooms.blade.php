@@ -72,10 +72,10 @@
                 <select wire:model="year" name="year" class="form-select" id="floatingSelect"
                     aria-label="Floating label select example">
                     <option selected>Unselected</option>
-                    <option value="{{ Carbon\Carbon::now()->format('Y') }}"> {{ Carbon\Carbon::now()->format('Y') }}
+                    <option value="{{ $this->getTime()->format('Y') }}"> {{ $this->getTime()->format('Y') }}
                     </option>
-                    <option value="{{ Carbon\Carbon::now()->addYears(1)->format('Y') }}">
-                        {{ Carbon\Carbon::now()->addYears(1)->format('Y') }}</option>
+                    <option value="{{ $this->getTime()->addYears(1)->format('Y') }}">
+                        {{ $this->getTime()->addYears(1)->format('Y') }}</option>
                 </select>
                 <label form="floatingSelect">Year</label>
             </div>

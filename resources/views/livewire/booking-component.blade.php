@@ -223,7 +223,7 @@
                                 <h3>
                                     @if ($this->getNextFree())
                                         Room is next free at <strong>
-                                            {{ Carbon\Carbon::parse($this->getNextFree())->format('d-m-Y H:i') }}
+                                            {{ Carbon\Carbon::parse($this->getNextFree())->format('H:i d-m-Y') }}
                                         </strong>
                                     @endif
 
