@@ -35,7 +35,7 @@ class RoomSeeder extends Seeder
         $r->building_id = 1;
         $r->floor = 2;
         $r->save();
-        Room::factory()->count(200)->create();
+        Room::factory()->count(600)->create();
         
     }
 

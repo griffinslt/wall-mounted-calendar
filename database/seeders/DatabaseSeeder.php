@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             'facility_id' => 4,
             'room_id' => 1,
         ]);
-        foreach (range(1, 300) as $_) {
+        foreach (range(1, 1000) as $_) {
             try {
                 DB::table('facility_room')->insert([
                     'facility_id' => rand(1, count(Facility::all())),

@@ -18,12 +18,13 @@ class RoomFactory extends Factory
     public function definition()
     {
         $building_id = fake()->numberBetween(1, 12);
-        $number_of_floors = Building::where("id", '=', $building_id)->first()->number_of_floors;
+        $highest_floor = Building::where("id", '=', $building_id)->first()->highest_floor;
+        $lowest_floor = Building::where("id", '=', $building_id)->first()->lowest_floor;
         return [
             'building_id' => $building_id,
             'capacity' => fake()->numberBetween(5, 150),
             'room_number' => fake()->numberBetween(1,20),
-            'floor' => fake()->numberBetween(0,$number_of_floors-1),
+            'floor' => fake()->numberBetween($lowest_floor,$highest_floor-1),
 
         ];
     }
